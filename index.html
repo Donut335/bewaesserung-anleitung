@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bewässerungscomputer – Anleitung</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f7f0;
+      color: #1a2e1a;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 24px 32px 16px;
+    }
+    header h1 { font-size: 1.6rem; margin-bottom: 4px; }
+    header p { font-size: 0.95rem; opacity: 0.85; }
+
+    nav {
+      background: #1b5e20;
+      display: flex;
+      gap: 4px;
+      padding: 0 32px;
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: #a5d6a7;
+      padding: 14px 22px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    nav button:hover { color: white; }
+    nav button.active {
+      color: white;
+      border-bottom-color: #66bb6a;
+    }
+
+    main {
+      max-width: 780px;
+      margin: 32px auto;
+      padding: 0 20px 60px;
+    }
+
+    .tab { display: none; }
+    .tab.active { display: block; }
+
+    h2 {
+      font-size: 1.3rem;
+      color: #2e7d32;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #c8e6c9;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      background: white;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: #2e7d32;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .step-body h3 { font-size: 1rem; margin-bottom: 6px; color: #1a2e1a; }
+    .step-body p { font-size: 0.92rem; line-height: 1.6; color: #3a4a3a; }
+
+    .tip-box {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: #5a4000;
+    }
+    .tip-box strong { color: #e65100; }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .card h3 {
+      font-size: 1rem;
+      color: #2e7d32;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p { font-size: 0.92rem; line-height: 1.6; color: #3a4a3a; }
+    .card ul { margin-top: 8px; padding-left: 20px; }
+    .card ul li { font-size: 0.92rem; line-height: 1.7; color: #3a4a3a; }
+
+    .error-card {
+      background: white;
+      border-radius: 10px;
+      padding: 0;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+    .error-title {
+      background: #ffebee;
+      padding: 14px 20px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: #b71c1c;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .error-body {
+      padding: 14px 20px;
+    }
+    .error-body p { font-size: 0.92rem; line-height: 1.6; color: #3a4a3a; margin-bottom: 6px; }
+    .error-body p:last-child { margin-bottom: 0; }
+    .fix-label {
+      font-size: 0.82rem;
+      font-weight: bold;
+      color: #2e7d32;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .icon { font-size: 1.1rem; }
+
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 0.8rem;
+      padding: 24px;
+      border-top: 1px solid #ddd;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 WLAN-Bewässerungscomputer</h1>
+  <p>Einfache Anleitung zur Einrichtung und Bedienung</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('einrichten', this)">① Einrichten</button>
+  <button onclick="showTab('benutzen', this)">② App &amp; Nutzung</button>
+  <button onclick="showTab('fehler', this)">③ Häufige Fehler</button>
+</nav>
+
+<main>
+
+  <!-- TAB 1: EINRICHTEN -->
+  <div id="einrichten" class="tab active">
+    <h2>Gerät einrichten – Schritt für Schritt</h2>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Batterien einlegen</h3>
+        <p>Öffne das Batteriefach auf der Rückseite des Geräts und lege <strong>4 AA-Batterien</strong> ein. Achte dabei auf die eingeprägten + und – Zeichen. Das Display sollte danach aufleuchten.</p>
+        <div class="tip-box">💡 Verwende <strong>Alkaline-Batterien</strong> – Billigbatterien können zu Verbindungsabbrüchen führen.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>An den Wasserhahn anschließen</h3>
+        <p>Schraube den Bewässerungscomputer auf deinen Außenwasserhahn. <strong>Gegen den Uhrzeigersinn = lösen, mit dem Uhrzeigersinn = festschrauben.</strong> Ziehe ihn handfest an – kein Werkzeug nötig. Schraube dann den Gartenschlauch unten ans Gerät.</p>
+        <div class="tip-box">⚠️ Stelle sicher, dass der Wasserhahn <strong>geöffnet</strong> ist, bevor du die App einrichtest.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>App installieren</h3>
+        <p>Lade die App <strong>„Smart Life"</strong> (oder „Tuya Smart") aus dem App Store (iPhone) oder Google Play Store (Android) herunter. Erstelle ein kostenloses Konto mit deiner E-Mail-Adresse.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Gerät zur App hinzufügen</h3>
+        <p>
+          1. Tippe in der App oben rechts auf das <strong>„+"</strong> Symbol.<br />
+          2. Wähle <strong>„Gerät hinzufügen"</strong> aus.<br />
+          3. Halte den Knopf am Bewässerungscomputer <strong>5 Sekunden gedrückt</strong> bis das Gerät schnell blinkt.<br />
+          4. Folge den Schritten in der App. Gib dein <strong>WLAN-Passwort</strong> ein (nur 2,4 GHz – kein 5 GHz!).
+        </p>
+        <div class="tip-box">💡 Das Gerät funktioniert <strong>nur mit 2,4 GHz WLAN</strong>. Falls dein Router beides sendet, musst du notfalls kurz auf 2,4 GHz umschalten oder es im Router trennen.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>Verbindung bestätigen</h3>
+        <p>Wenn die Einrichtung erfolgreich war, erscheint das Gerät in der App und du kannst es umbenennen (z. B. „Garten vorne"). Das Display am Gerät zeigt dann ein WLAN-Symbol.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: BENUTZEN -->
+  <div id="benutzen" class="tab">
+    <h2>App benutzen &amp; Bewässerung einstellen</h2>
+
+    <div class="card">
+      <h3><span class="icon">💧</span> Manuell bewässern</h3>
+      <p>Öffne die App und tippe auf dein Gerät. Du siehst einen großen Ein/Aus-Schalter. Tippe darauf, um die Bewässerung <strong>sofort zu starten</strong> oder zu stoppen. Praktisch zum schnellen Testen.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">⏰</span> Zeitplan erstellen (automatisch bewässern)</h3>
+      <p>So legst du fest, dass der Garten jeden Tag zur gleichen Zeit bewässert wird:</p>
+      <ul>
+        <li>Tippe in der Geräteansicht auf <strong>„Zeitplan"</strong> oder das Uhr-Symbol.</li>
+        <li>Tippe auf <strong>„+"</strong> um einen neuen Plan zu erstellen.</li>
+        <li>Wähle die <strong>Startzeit</strong> (z. B. 06:00 Uhr morgens).</li>
+        <li>Wähle die <strong>Dauer</strong> der Bewässerung (z. B. 15 Minuten).</li>
+        <li>Wähle an welchen <strong>Wochentagen</strong> bewässert werden soll.</li>
+        <li>Speichern – fertig!</li>
+      </ul>
+      <div class="tip-box">💡 Morgens früh oder abends spät bewässern ist am besten – weniger Wasser verdunstet.</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">⚡</span> Timer starten (einmalig)</h3>
+      <p>Du möchtest jetzt für genau 20 Minuten bewässern und es soll dann automatisch stoppen? Tippe auf <strong>„Timer"</strong> oder das Stoppuhr-Symbol, stelle die Minuten ein und starte. Das Wasser stoppt von selbst.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🎙️</span> Sprachsteuerung (Alexa / Google)</h3>
+      <p>Du kannst das Gerät auch per Sprache steuern. Voraussetzung: Alexa oder Google Home App ist eingerichtet.</p>
+      <ul>
+        <li>Öffne die Alexa- oder Google-Home-App.</li>
+        <li>Gehe zu <strong>„Skills"</strong> (Alexa) oder <strong>„Geräte hinzufügen"</strong> (Google).</li>
+        <li>Suche nach <strong>„Smart Life"</strong> und verknüpfe dein Konto.</li>
+        <li>Danach funktionieren Befehle wie: <em>„Alexa, schalte Garten vorne ein."</em></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🔕</span> Zeitplan pausieren</h3>
+      <p>Du fährst in Urlaub und möchtest trotzdem die Automatik laufen lassen? Oder kurz pausieren? Tippe in der App auf den Zeitplan und deaktiviere ihn mit dem Schieberegler – er bleibt gespeichert und du kannst ihn jederzeit wieder einschalten.</p>
+    </div>
+  </div>
+
+  <!-- TAB 3: FEHLER -->
+  <div id="fehler" class="tab">
+    <h2>Häufige Fehler &amp; Lösungen</h2>
+
+    <div class="error-card">
+      <div class="error-title">❌ Gerät lässt sich nicht mit WLAN verbinden</div>
+      <div class="error-body">
+        <p>Das ist der häufigste Fehler bei der Einrichtung.</p>
+        <p class="fix-label">✔ Lösung:</p>
+        <p>Stelle sicher, dass du mit <strong>2,4 GHz WLAN</strong> verbindest, nicht mit 5 GHz. Die meisten Router haben beide. Im Router-Einstellungen (meist 192.168.1.1 im Browser) kannst du beide trennen oder du gibst dem 2,4-GHz-Netz einen anderen Namen. Dann wähle in der App das richtige Netz.</p>
+        <p>Außerdem: Steh beim Einrichten in der <strong>Nähe des Routers</strong>.</p>
+      </div>
+    </div>
+
+    <div class="error-card">
+      <div class="error-title">❌ Gerät wird in der App als „offline" angezeigt</div>
+      <div class="error-body">
+        <p>Das Gerät ist eingerichtet, aber die App zeigt es als offline.</p>
+        <p class="fix-label">✔ Lösung:</p>
+        <p>1. Prüfe ob das WLAN zuhause funktioniert.<br />
+        2. Nimm die Batterien kurz heraus, warte 10 Sekunden, lege sie wieder ein.<br />
+        3. Stelle das Gerät näher an den Router – Beton- und Steinwände blockieren Signal stark.</p>
+      </div>
+    </div>
+
+    <div class="error-card">
+      <div class="error-title">❌ Wasser läuft nicht, obwohl der Timer läuft</div>
+      <div class="error-body">
+        <p>In der App steht, die Bewässerung ist aktiv – aber kein Wasser kommt.</p>
+        <p class="fix-label">✔ Lösung:</p>
+        <p>Überprüfe als erstes: Ist der <strong>Wasserhahn geöffnet</strong>? Das vergisst man schnell. Das Gerät öffnet nur das Ventil – Wasser muss am Hahn anliegen.</p>
+        <p>Falls Wasser kommt aber sehr schwach: Der Filter im Gerät könnte verstopft sein – schraube es ab und spüle den kleinen Siebfilter unter Wasser durch.</p>
+      </div>
+    </div>
+
+    <div class="error-card">
+      <div class="error-title">❌ Der Zeitplan wird nicht ausgeführt</div>
+      <div class="error-body">
+        <p>Der Zeitplan ist eingestellt, aber das Gerät bewässert nicht zur richtigen Zeit.</p>
+        <p class="fix-label">✔ Lösung:</p>
+        <p>Öffne die App und gehe zu den Einstellungen des Geräts. Prüfe ob die <strong>Zeitzone</strong> korrekt eingestellt ist (Europa/Berlin für Deutschland). Außerdem: Ist der Zeitplan aktiv (Schieberegler grün)?</p>
+      </div>
+    </div>
+
+    <div class="error-card">
+      <div class="error-title">❌ Gerät tropft an der Verbindung zum Hahn</div>
+      <div class="error-body">
+        <p>An der Gewindestelle zwischen Hahn und Gerät tropft es.</p>
+        <p class="fix-label">✔ Lösung:</p>
+        <p>Schraube das Gerät ab. Wickle <strong>Teflonband</strong> (gibt es für ~1€ im Baumarkt) ein paarmal ums Gewinde und schraube es wieder fest. Das dichtet ab.</p>
+      </div>
+    </div>
+
+    <div class="error-card">
+      <div class="error-title">❌ App fragt nach Konto – Passwort vergessen</div>
+      <div class="error-body">
+        <p>Du kannst dich nicht mehr in die Smart-Life-App einloggen.</p>
+        <p class="fix-label">✔ Lösung:</p>
+        <p>Tippe auf <strong>„Passwort vergessen"</strong> auf dem Login-Bildschirm. Du bekommst eine E-Mail mit einem Link zum Zurücksetzen. Das Gerät selbst bleibt gespeichert und wird nach dem Login wieder angezeigt.</p>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  Anleitung für WLAN-Bewässerungscomputer (Tuya/Smart Life kompatibel) · Stand 2025
+</footer>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
