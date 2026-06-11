@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WLAN-Bewässerungscomputer – Anleitung</title>
+  <title>Johgee Bewässerungscomputer – Anleitung</title>
   <style>
     :root {
+      --orange:      #e65100;
+      --orange-mid:  #ff6d00;
+      --orange-light:#fff3e0;
+      --dark:        #1a1a1a;
+      --dark2:       #2d2d2d;
       --green:       #2e7d32;
-      --green-dark:  #1b5e20;
       --green-light: #e8f5e9;
       --green-mid:   #66bb6a;
       --accent:      #00897b;
@@ -15,237 +19,169 @@
       --warn-bg:     #fff3e0;
       --error:       #c62828;
       --error-bg:    #ffebee;
-      --text:        #1a2a1a;
-      --text-soft:   #4a5a4a;
+      --text:        #1a1a1a;
+      --text-soft:   #4a4a4a;
       --white:       #ffffff;
-      --shadow:      0 2px 12px rgba(0,0,0,0.09);
+      --shadow:      0 2px 14px rgba(0,0,0,0.10);
+      --bg:          #f5f5f5;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f4f9f4;
-      color: var(--text);
-      min-height: 100vh;
-    }
-
+    /* HEADER */
     header {
-      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 60%, var(--accent) 100%);
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #3a2000 100%);
       color: white;
-      padding: 36px 32px 28px;
+      padding: 32px 32px 24px;
       position: relative;
       overflow: hidden;
     }
-    header::before {
-      content: '';
-      position: absolute;
-      right: -60px; top: -60px;
-      width: 260px; height: 260px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      right: 40px; top: 30px;
-      width: 140px; height: 140px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 50%;
-    }
-    .header-inner { position: relative; max-width: 820px; margin: 0 auto; }
-    header h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.02em; }
-    header p  { margin-top: 6px; opacity: 0.85; font-size: 1rem; }
+    header::before { content:''; position:absolute; right:-40px; top:-40px; width:200px; height:200px; background:rgba(230,81,0,0.12); border-radius:50%; }
+    .header-inner { position:relative; max-width:860px; margin:0 auto; display:flex; align-items:center; gap:22px; }
+    .header-logo { flex-shrink:0; }
+    header h1 { font-size:1.8rem; font-weight:700; letter-spacing:-0.02em; }
+    header h1 span { color: var(--orange-mid); }
+    header p { margin-top:5px; opacity:.8; font-size:.95rem; }
     .header-badge {
-      display: inline-block;
-      margin-top: 14px;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 0.82rem;
-      letter-spacing: 0.03em;
+      display:inline-block; margin-top:12px;
+      background:rgba(230,81,0,0.25); border:1px solid rgba(230,81,0,0.4);
+      border-radius:20px; padding:4px 14px; font-size:.82rem;
     }
 
+    /* NAV */
     nav {
-      background: var(--green-dark);
-      display: flex;
-      padding: 0 32px;
-      gap: 2px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      background: #111;
+      display:flex; padding:0 32px; gap:2px;
+      position:sticky; top:0; z-index:100;
+      box-shadow:0 2px 8px rgba(0,0,0,0.4);
+      overflow-x:auto;
     }
     nav button {
-      background: none;
-      border: none;
-      color: #a5d6a7;
-      padding: 15px 24px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: all 0.2s;
-      white-space: nowrap;
+      background:none; border:none; color:#aaa;
+      padding:14px 22px; font-size:.93rem; cursor:pointer;
+      border-bottom:3px solid transparent; transition:all .2s; white-space:nowrap;
     }
-    nav button:hover { color: white; background: rgba(255,255,255,0.06); }
-    nav button.active { color: white; border-bottom-color: var(--green-mid); }
+    nav button:hover { color:white; }
+    nav button.active { color:white; border-bottom-color:var(--orange-mid); }
 
-    main {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 36px 20px 80px;
-    }
+    /* MAIN */
+    main { max-width:860px; margin:0 auto; padding:36px 20px 80px; }
+    .tab { display:none; }
+    .tab.active { display:block; }
 
-    .tab { display: none; }
-    .tab.active { display: block; }
+    .section-head { margin-bottom:28px; }
+    .section-head h2 { font-size:1.45rem; color:var(--dark); margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+    .section-head h2::before { content:''; display:block; width:4px; height:26px; background:var(--orange-mid); border-radius:4px; }
+    .section-head p { color:var(--text-soft); font-size:.94rem; padding-left:14px; }
 
-    .section-head { margin-bottom: 28px; }
-    .section-head h2 { font-size: 1.5rem; color: var(--green); margin-bottom: 6px; }
-    .section-head p  { color: var(--text-soft); font-size: 0.95rem; }
-
+    /* STEP */
     .step {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 24px 24px 24px 20px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      border-left: 4px solid var(--green-mid);
+      background:var(--white); border-radius:14px;
+      padding:22px 22px 22px 18px; margin-bottom:20px;
+      box-shadow:var(--shadow);
+      display:flex; gap:18px; align-items:flex-start;
+      border-left:4px solid var(--orange-mid);
     }
-    .step-left { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
     .step-num {
-      width: 40px; height: 40px;
-      background: linear-gradient(135deg, var(--green), var(--accent));
-      color: white;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 1.05rem;
-      box-shadow: 0 2px 8px rgba(46,125,50,0.35);
+      flex-shrink:0; width:38px; height:38px;
+      background:linear-gradient(135deg,var(--orange),#bf360c);
+      color:white; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:1rem;
+      box-shadow:0 2px 8px rgba(230,81,0,0.4);
     }
-    .step-body { flex: 1; }
-    .step-body h3 { font-size: 1.05rem; margin-bottom: 8px; }
-    .step-body p  { font-size: 0.93rem; line-height: 1.7; color: var(--text-soft); }
-    .step-body ul { margin-top: 8px; padding-left: 18px; }
-    .step-body ul li { font-size: 0.93rem; line-height: 1.8; color: var(--text-soft); }
+    .step-body { flex:1; }
+    .step-body h3 { font-size:1.03rem; margin-bottom:8px; color:var(--dark); }
+    .step-body p  { font-size:.92rem; line-height:1.7; color:var(--text-soft); }
+    .step-body ul { margin-top:8px; padding-left:18px; }
+    .step-body ul li { font-size:.92rem; line-height:1.85; color:var(--text-soft); }
 
+    /* ILLUS */
     .illus {
-      background: var(--green-light);
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 14px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background:#f8f8f8; border:1px solid #e8e8e8;
+      border-radius:12px; padding:14px;
+      margin-top:14px;
+      display:flex; justify-content:center; align-items:center;
     }
-    .illus svg { max-width: 100%; height: auto; display: block; }
+    .illus svg { max-width:100%; height:auto; display:block; }
 
+    /* TIP / INFO */
     .tip {
-      background: var(--warn-bg);
-      border-left: 4px solid var(--warn);
-      border-radius: 0 8px 8px 0;
-      padding: 10px 14px;
-      margin-top: 12px;
-      font-size: 0.88rem;
-      color: #5a3a00;
-      line-height: 1.5;
+      background:var(--warn-bg); border-left:4px solid var(--warn);
+      border-radius:0 8px 8px 0; padding:10px 14px;
+      margin-top:12px; font-size:.88rem; color:#5a3a00; line-height:1.55;
     }
-    .tip strong { color: var(--warn); }
-
+    .tip strong { color:var(--warn); }
     .info {
-      background: #e3f2fd;
-      border-left: 4px solid #1976d2;
-      border-radius: 0 8px 8px 0;
-      padding: 10px 14px;
-      margin-top: 12px;
-      font-size: 0.88rem;
-      color: #0d2a4a;
-      line-height: 1.5;
+      background:#e3f2fd; border-left:4px solid #1976d2;
+      border-radius:0 8px 8px 0; padding:10px 14px;
+      margin-top:12px; font-size:.88rem; color:#0d2a4a; line-height:1.55;
+    }
+    .success {
+      background:#e8f5e9; border-left:4px solid #388e3c;
+      border-radius:0 8px 8px 0; padding:10px 14px;
+      margin-top:12px; font-size:.88rem; color:#1b5e20; line-height:1.55;
     }
 
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 18px;
-      margin-bottom: 24px;
-    }
-    .card {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-    }
-    .card-icon { font-size: 2rem; margin-bottom: 10px; }
-    .card h3   { font-size: 1rem; color: var(--green); margin-bottom: 8px; }
-    .card p    { font-size: 0.92rem; line-height: 1.7; color: var(--text-soft); }
-    .card ul   { margin-top: 8px; padding-left: 18px; }
-    .card ul li { font-size: 0.92rem; line-height: 1.8; color: var(--text-soft); }
+    /* CARD GRID */
+    .card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:18px; margin-bottom:24px; }
+    .card { background:var(--white); border-radius:14px; padding:22px; box-shadow:var(--shadow); }
+    .card-icon { font-size:1.8rem; margin-bottom:10px; }
+    .card h3   { font-size:1rem; color:var(--dark); margin-bottom:8px; }
+    .card p    { font-size:.92rem; line-height:1.7; color:var(--text-soft); }
+    .card ul   { margin-top:8px; padding-left:18px; }
+    .card ul li { font-size:.92rem; line-height:1.85; color:var(--text-soft); }
 
+    /* APP SCREEN */
     .app-screen {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-      display: flex;
-      gap: 20px;
-      align-items: center;
+      background:var(--white); border-radius:14px;
+      padding:20px; box-shadow:var(--shadow); margin-bottom:20px;
+      display:flex; gap:20px; align-items:center;
     }
-    .app-screen .screen-illus { flex-shrink: 0; }
-    .app-screen .screen-text h3 { font-size: 1rem; color: var(--green); margin-bottom: 8px; }
-    .app-screen .screen-text p  { font-size: 0.92rem; line-height: 1.7; color: var(--text-soft); }
-    .app-screen .screen-text ul { padding-left: 18px; margin-top: 6px; }
-    .app-screen .screen-text ul li { font-size: 0.92rem; line-height: 1.8; color: var(--text-soft); }
+    .app-screen .screen-illus { flex-shrink:0; }
+    .app-screen .screen-text h3 { font-size:1rem; color:var(--dark); margin-bottom:8px; }
+    .app-screen .screen-text p  { font-size:.92rem; line-height:1.7; color:var(--text-soft); }
+    .app-screen .screen-text ul { padding-left:18px; margin-top:6px; }
+    .app-screen .screen-text ul li { font-size:.92rem; line-height:1.85; color:var(--text-soft); }
 
-    .error-card {
-      background: var(--white);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      margin-bottom: 18px;
+    /* ZONE BADGE */
+    .zone-badge {
+      display:inline-block; padding:2px 10px; border-radius:12px;
+      font-size:.8rem; font-weight:700; letter-spacing:.04em;
     }
+    .zone1 { background:#e3f2fd; color:#1565c0; }
+    .zone2 { background:#f3e5f5; color:#6a1b9a; }
+
+    /* ERROR CARDS */
+    .error-card { background:var(--white); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); margin-bottom:18px; }
     .error-title {
-      background: var(--error-bg);
-      padding: 14px 20px;
-      font-weight: 600;
-      font-size: 0.96rem;
-      color: var(--error);
-      display: flex; align-items: center; gap: 10px;
-      cursor: pointer;
-      user-select: none;
+      background:var(--error-bg); padding:14px 20px;
+      font-weight:600; font-size:.95rem; color:var(--error);
+      display:flex; align-items:center; gap:10px;
+      cursor:pointer; user-select:none;
     }
-    .error-title::after { content: '▾'; margin-left: auto; font-size: 1rem; transition: transform 0.2s; }
-    .error-title.open::after { transform: rotate(180deg); }
-    .error-body { padding: 16px 20px; display: none; }
-    .error-body.open { display: block; }
-    .error-body p   { font-size: 0.92rem; line-height: 1.7; color: var(--text-soft); margin-bottom: 8px; }
-    .fix-label {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--green);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin: 10px 0 4px;
-    }
+    .error-title::after { content:'▾'; margin-left:auto; font-size:1rem; transition:transform .2s; }
+    .error-title.open::after { transform:rotate(180deg); }
+    .error-body { padding:16px 20px; display:none; }
+    .error-body.open { display:block; }
+    .error-body p { font-size:.92rem; line-height:1.7; color:var(--text-soft); margin-bottom:8px; }
+    .fix-label { font-size:.8rem; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:.06em; margin:10px 0 4px; }
 
-    footer {
-      text-align: center;
-      color: #999;
-      font-size: 0.82rem;
-      padding: 28px;
-      background: var(--white);
-      border-top: 1px solid #e8e8e8;
-    }
+    /* PARTS DIAGRAM special */
+    .diagram-wrap { background:var(--white); border-radius:16px; padding:24px; box-shadow:var(--shadow); margin-bottom:28px; }
+    .diagram-wrap h3 { font-size:1.1rem; color:var(--dark); margin-bottom:16px; text-align:center; }
 
-    @media (max-width: 600px) {
-      header { padding: 24px 16px; }
-      nav { padding: 0 8px; overflow-x: auto; }
-      nav button { padding: 14px 14px; font-size: 0.88rem; }
-      main { padding: 20px 12px 60px; }
-      .app-screen { flex-direction: column; }
-      .card-grid { grid-template-columns: 1fr; }
+    footer { text-align:center; color:#999; font-size:.82rem; padding:28px; background:var(--white); border-top:1px solid #e8e8e8; }
+
+    @media(max-width:600px){
+      header { padding:20px 14px; }
+      .header-inner { flex-direction:column; align-items:flex-start; gap:10px; }
+      nav { padding:0 6px; }
+      nav button { padding:12px 12px; font-size:.85rem; }
+      main { padding:18px 10px 60px; }
+      .app-screen { flex-direction:column; }
+      .card-grid { grid-template-columns:1fr; }
+      .step { flex-direction:column; gap:12px; }
     }
   </style>
 </head>
@@ -253,367 +189,687 @@
 
 <header>
   <div class="header-inner">
-    <h1>🌿 WLAN-Bewässerungscomputer</h1>
-    <p>Vollständige Anleitung zur Einrichtung, Bedienung und Fehlersuche</p>
-    <span class="header-badge">Smart Life / Tuya · Alexa &amp; Google Home</span>
+    <div class="header-logo">
+      <!-- Johgee logo icon SVG -->
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="14" fill="#2d2d2d"/>
+        <rect x="8" y="8" width="48" height="32" rx="6" fill="#1a1a1a"/>
+        <circle cx="22" cy="24" r="4" fill="#e65100" opacity=".3"/>
+        <circle cx="42" cy="24" r="4" fill="#e65100" opacity=".3"/>
+        <circle cx="22" cy="24" r="2" fill="#00e676"/>
+        <circle cx="42" cy="24" r="2" fill="#00e676"/>
+        <rect x="22" y="30" width="20" height="8" rx="4" fill="#e65100"/>
+        <rect x="8" y="44" width="20" height="14" rx="4" fill="#333"/>
+        <rect x="36" y="44" width="20" height="14" rx="4" fill="#333"/>
+        <text x="14" y="54" font-size="5" fill="#aaa" font-family="sans-serif">Z1</text>
+        <text x="42" y="54" font-size="5" fill="#aaa" font-family="sans-serif">Z2</text>
+      </svg>
+    </div>
+    <div>
+      <h1><span>Johgee</span> Bewässerungscomputer</h1>
+      <p>2-Zonen WLAN-Steuerung · Komplette Anleitung auf Deutsch</p>
+      <span class="header-badge">Smart Life App · Alexa &amp; Google Home · 2 Zonen gleichzeitig</span>
+    </div>
   </div>
 </header>
 
 <nav>
-  <button class="active" onclick="showTab('einrichten', this)">① Einrichten</button>
-  <button onclick="showTab('benutzen', this)">② App &amp; Nutzung</button>
-  <button onclick="showTab('fehler', this)">③ Häufige Fehler</button>
+  <button class="active" onclick="showTab('teile',this)">🔍 Gerät kennenlernen</button>
+  <button onclick="showTab('einrichten',this)">① Einrichten</button>
+  <button onclick="showTab('benutzen',this)">② App &amp; Nutzung</button>
+  <button onclick="showTab('fehler',this)">③ Häufige Fehler</button>
 </nav>
 
 <main>
 
-<!-- ══════════════ TAB 1 – EINRICHTEN ══════════════ -->
-<div id="einrichten" class="tab active">
+<!-- ══════════════════════════════════════
+     TAB 0 – TEILE / DIAGRAM
+══════════════════════════════════════ -->
+<div id="teile" class="tab active">
+
+  <div class="section-head">
+    <h2>Gerät kennenlernen</h2>
+    <p>Hier siehst du genau was welches Teil ist und wofür es gebraucht wird.</p>
+  </div>
+
+  <!-- MAIN DIAGRAM -->
+  <div class="diagram-wrap">
+    <h3>📦 Lieferumfang – was ist was?</h3>
+    <div class="illus" style="background:white; border:none; padding:0;">
+      <svg width="760" height="520" viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M1,1 L7,4 L1,7 Z" fill="#555"/>
+          </marker>
+          <marker id="arr-o" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M1,1 L7,4 L1,7 Z" fill="#e65100"/>
+          </marker>
+          <marker id="arr-b" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M1,1 L7,4 L1,7 Z" fill="#1565c0"/>
+          </marker>
+          <marker id="arr-g" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M1,1 L7,4 L1,7 Z" fill="#2e7d32"/>
+          </marker>
+        </defs>
+
+        <!-- ═══ HAUPTGERÄT ═══ -->
+        <!-- Gerät Körper -->
+        <rect x="270" y="60" width="200" height="130" rx="16" fill="#1e1e1e"/>
+        <!-- Orange Seitengriffe -->
+        <rect x="256" y="72" width="22" height="106" rx="8" fill="#e65100"/>
+        <rect x="462" y="72" width="22" height="106" rx="8" fill="#e65100"/>
+
+        <!-- Oben: Anschluss zum Hahn (Knopf/Kranz) -->
+        <ellipse cx="370" cy="60" rx="30" ry="12" fill="#333"/>
+        <ellipse cx="370" cy="55" rx="24" ry="9" fill="#444"/>
+        <text x="370" y="40" text-anchor="middle" font-size="11" fill="#555">Anschluss für</text>
+        <text x="370" y="28" text-anchor="middle" font-size="11" fill="#555">den Wasserhahn</text>
+        <line x1="370" y1="43" x2="370" y2="53" stroke="#777" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- Johgee Text -->
+        <text x="370" y="108" text-anchor="middle" font-size="14" fill="#888" font-style="italic">johgee</text>
+
+        <!-- Zwei grüne LEDs -->
+        <circle cx="340" cy="92" r="6" fill="#00e676"/>
+        <circle cx="340" cy="92" r="3" fill="#69f0ae"/>
+        <circle cx="400" cy="92" r="6" fill="#00e676"/>
+        <circle cx="400" cy="92" r="3" fill="#69f0ae"/>
+
+        <!-- Oranger Doppelknopf -->
+        <rect x="323" y="118" width="94" height="32" rx="16" fill="#e65100"/>
+        <line x1="370" y1="118" x2="370" y2="150" stroke="#bf360c" stroke-width="2"/>
+        <text x="346" y="137" text-anchor="middle" font-size="9" fill="white">Z1</text>
+        <text x="394" y="137" text-anchor="middle" font-size="9" fill="white">Z2</text>
+
+        <!-- Zone 1 unten links -->
+        <rect x="290" y="190" width="56" height="60" rx="6" fill="#333"/>
+        <!-- Gewinde Zone 1 -->
+        <rect x="292" y="192" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="292" y="200" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="292" y="208" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="292" y="216" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="292" y="224" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="292" y="232" width="52" height="4" rx="1" fill="#555"/>
+        <text x="318" y="260" text-anchor="middle" font-size="10" fill="#888">ZONE1</text>
+
+        <!-- Zone 2 unten rechts -->
+        <rect x="394" y="190" width="56" height="60" rx="6" fill="#333"/>
+        <rect x="396" y="192" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="396" y="200" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="396" y="208" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="396" y="216" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="396" y="224" width="52" height="4" rx="1" fill="#555"/>
+        <rect x="396" y="232" width="52" height="4" rx="1" fill="#555"/>
+        <text x="422" y="260" text-anchor="middle" font-size="10" fill="#888">ZONE2</text>
+
+        <!-- ═══ HUB ═══ -->
+        <rect x="570" y="160" width="70" height="70" rx="10" fill="#1e1e1e" stroke="#333" stroke-width="1.5"/>
+        <circle cx="605" cy="195" r="8" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+        <circle cx="605" cy="195" r="4" fill="#e65100"/>
+        <circle cx="625" cy="173" r="5" fill="#00e676"/>
+        <text x="605" y="242" text-anchor="middle" font-size="10" fill="#555">johgee</text>
+        <text x="605" y="254" text-anchor="middle" font-size="9" fill="#888">WLAN-Hub</text>
+
+        <!-- ═══ ADAPTER ═══ -->
+        <rect x="100" y="330" width="44" height="34" rx="6" fill="#222"/>
+        <rect x="102" y="332" width="40" height="4" rx="1" fill="#444"/>
+        <rect x="102" y="340" width="40" height="4" rx="1" fill="#444"/>
+        <rect x="102" y="348" width="40" height="4" rx="1" fill="#444"/>
+        <text x="122" y="380" text-anchor="middle" font-size="9" fill="#555">Adapter 1</text>
+        <text x="122" y="391" text-anchor="middle" font-size="8" fill="#888">(3/4" Gewinde)</text>
+
+        <rect x="168" y="330" width="38" height="30" rx="5" fill="#222"/>
+        <rect x="170" y="332" width="34" height="4" rx="1" fill="#444"/>
+        <rect x="170" y="340" width="34" height="4" rx="1" fill="#444"/>
+        <rect x="170" y="348" width="34" height="4" rx="1" fill="#444"/>
+        <text x="187" y="380" text-anchor="middle" font-size="9" fill="#555">Adapter 2</text>
+        <text x="187" y="391" text-anchor="middle" font-size="8" fill="#888">(1" Gewinde)</text>
+
+        <!-- ═══ DICHTUNG ═══ -->
+        <ellipse cx="260" cy="350" rx="18" ry="8" fill="#f5e642" stroke="#d4a000" stroke-width="1.5"/>
+        <ellipse cx="260" cy="350" rx="10" ry="4" fill="none" stroke="#d4a000" stroke-width="1"/>
+        <text x="260" y="372" text-anchor="middle" font-size="9" fill="#555">Dichtungsring</text>
+        <text x="260" y="383" text-anchor="middle" font-size="8" fill="#888">(Gummiring)</text>
+
+        <!-- ═══ LABEL LINES & TEXTS ═══ -->
+
+        <!-- Hahn-Anschluss label: schon oben direkt -->
+
+        <!-- LED Zone 1 -->
+        <line x1="334" y1="86" x2="200" y2="60" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-g)"/>
+        <rect x="60" y="42" width="136" height="30" rx="6" fill="#e8f5e9"/>
+        <text x="128" y="55" text-anchor="middle" font-size="10" fill="#1b5e20" font-weight="bold">LED Zone 1</text>
+        <text x="128" y="67" text-anchor="middle" font-size="9" fill="#388e3c">grün = Ventil offen</text>
+
+        <!-- LED Zone 2 -->
+        <line x1="406" y1="86" x2="540" y2="60" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-g)"/>
+        <rect x="544" y="42" width="136" height="30" rx="6" fill="#e8f5e9"/>
+        <text x="612" y="55" text-anchor="middle" font-size="10" fill="#1b5e20" font-weight="bold">LED Zone 2</text>
+        <text x="612" y="67" text-anchor="middle" font-size="9" fill="#388e3c">grün = Ventil offen</text>
+
+        <!-- Knopf label -->
+        <line x1="346" y1="150" x2="200" y2="180" stroke="#e65100" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-o)"/>
+        <rect x="50" y="168" width="148" height="38" rx="6" fill="#fff3e0"/>
+        <text x="124" y="183" text-anchor="middle" font-size="10" fill="#bf360c" font-weight="bold">Doppelknopf</text>
+        <text x="124" y="196" text-anchor="middle" font-size="9" fill="#e65100">Links = Zone 1 · Rechts = Zone 2</text>
+
+        <!-- Zone 1 label -->
+        <line x1="318" y1="245" x2="220" y2="300" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-b)"/>
+        <rect x="50" y="286" width="168" height="38" rx="6" fill="#e3f2fd"/>
+        <text x="134" y="301" text-anchor="middle" font-size="10" fill="#0d47a1" font-weight="bold">Zone 1 – Wasserauslass</text>
+        <text x="134" y="314" text-anchor="middle" font-size="9" fill="#1565c0">Schlauch 1 anschrauben</text>
+
+        <!-- Zone 2 label -->
+        <line x1="422" y1="245" x2="540" y2="300" stroke="#6a1b9a" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+        <rect x="542" y="286" width="168" height="38" rx="6" fill="#f3e5f5"/>
+        <text x="626" y="301" text-anchor="middle" font-size="10" fill="#4a148c" font-weight="bold">Zone 2 – Wasserauslass</text>
+        <text x="626" y="314" text-anchor="middle" font-size="9" fill="#6a1b9a">Schlauch 2 anschrauben</text>
+
+        <!-- Hub label -->
+        <line x1="605" y1="160" x2="640" y2="120" stroke="#555" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+        <rect x="570" y="90" width="170" height="44" rx="6" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+        <text x="655" y="108" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">WLAN-Hub (Bridge)</text>
+        <text x="655" y="122" text-anchor="middle" font-size="9" fill="#666">Verbindet Gerät mit dem WLAN</text>
+
+        <!-- Adapter label -->
+        <line x1="145" y1="330" x2="180" y2="300" stroke="#555" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+        <rect x="50" y="400" width="200" height="50" rx="6" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+        <text x="150" y="418" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Adapter (2 Stück)</text>
+        <text x="150" y="431" text-anchor="middle" font-size="9" fill="#666">Für verschiedene Hahngrößen</text>
+        <text x="150" y="442" text-anchor="middle" font-size="9" fill="#888">(falls der Hahn nicht passt)</text>
+
+        <!-- Dichtung label -->
+        <line x1="270" y1="350" x2="360" y2="370" stroke="#555" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+        <rect x="360" y="355" width="190" height="38" rx="6" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+        <text x="455" y="371" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Gummidichtung</text>
+        <text x="455" y="383" text-anchor="middle" font-size="9" fill="#666">Verhindert das Tropfen an den Gewinden</text>
+
+        <!-- Batteriefach label (Rückseite) -->
+        <rect x="270" y="60" width="200" height="130" rx="16" fill="none" stroke="#555" stroke-width="0"/>
+        <line x1="370" y1="190" x2="370" y2="430" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+        <rect x="300" y="430" width="140" height="38" rx="6" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+        <text x="370" y="447" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Batteriefach (Rückseite)</text>
+        <text x="370" y="459" text-anchor="middle" font-size="9" fill="#666">4× AA Alkaline-Batterien</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- DETAIL DIAGRAM: Wie alles zusammenhängt -->
+  <div class="diagram-wrap">
+    <h3>🔗 Wie hängt alles zusammen?</h3>
+    <div class="illus" style="background:white; border:none; padding:0;">
+      <svg width="700" height="200" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;">
+        <defs>
+          <marker id="fw" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M1,1 L7,4 L1,7 Z" fill="#4caf50"/>
+          </marker>
+          <marker id="fw2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M1,1 L7,4 L1,7 Z" fill="#1976d2"/>
+          </marker>
+        </defs>
+
+        <!-- 1. Wasserhahn -->
+        <rect x="20" y="60" width="90" height="80" rx="10" fill="#78909c"/>
+        <rect x="30" y="72" width="70" height="10" rx="3" fill="#607d8b"/>
+        <rect x="50" y="50" width="14" height="24" rx="3" fill="#546e7a"/>
+        <rect x="40" y="46" width="34" height="10" rx="3" fill="#546e7a"/>
+        <text x="65" y="108" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Wasserhahn</text>
+        <text x="65" y="122" text-anchor="middle" font-size="9" fill="#cfd8dc">(bleibt auf)</text>
+
+        <!-- Pfeil: Wasser rein -->
+        <line x1="112" y1="100" x2="145" y2="100" stroke="#4caf50" stroke-width="2.5" marker-end="url(#fw)"/>
+        <text x="128" y="92" text-anchor="middle" font-size="9" fill="#2e7d32">Wasser</text>
+
+        <!-- 2. Johgee Gerät -->
+        <rect x="148" y="50" width="130" height="100" rx="12" fill="#1e1e1e"/>
+        <rect x="136" y="60" width="18" height="80" rx="6" fill="#e65100"/>
+        <rect x="278" y="60" width="18" height="80" rx="6" fill="#e65100"/>
+        <text x="213" y="90" text-anchor="middle" font-size="11" fill="#ccc" font-style="italic">johgee</text>
+        <circle cx="196" cy="73" r="4" fill="#00e676"/>
+        <circle cx="230" cy="73" r="4" fill="#00e676"/>
+        <rect x="188" y="97" width="50" height="18" rx="9" fill="#e65100"/>
+        <text x="213" y="110" text-anchor="middle" font-size="8" fill="white">Z1 | Z2</text>
+        <text x="213" y="140" text-anchor="middle" font-size="9" fill="#888">Hauptgerät</text>
+
+        <!-- Zone 1 Pfeil -->
+        <line x1="167" y1="152" x2="167" y2="175" stroke="#1565c0" stroke-width="2.5" marker-end="url(#fw2)"/>
+        <text x="167" y="192" text-anchor="middle" font-size="9" fill="#1565c0">Zone 1</text>
+
+        <!-- Zone 2 Pfeil -->
+        <line x1="259" y1="152" x2="259" y2="175" stroke="#6a1b9a" stroke-width="2.5" marker-end="url(#fw2)"/>
+        <text x="259" y="192" text-anchor="middle" font-size="9" fill="#6a1b9a">Zone 2</text>
+
+        <!-- Funk-Wellen Gerät → Hub -->
+        <path d="M296,90 Q330,70 345,90" stroke="#ff6d00" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+        <path d="M296,100 Q340,72 358,100" stroke="#ff6d00" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity=".5"/>
+        <text x="327" y="68" text-anchor="middle" font-size="9" fill="#e65100">Funk</text>
+
+        <!-- 3. Hub -->
+        <rect x="360" y="65" width="65" height="65" rx="9" fill="#1e1e1e" stroke="#333" stroke-width="1.5"/>
+        <circle cx="392" cy="98" r="7" fill="#1a1a1a" stroke="#444" stroke-width="1"/>
+        <circle cx="392" cy="98" r="3" fill="#e65100"/>
+        <circle cx="410" cy="73" r="4" fill="#00e676"/>
+        <text x="392" y="144" text-anchor="middle" font-size="10" fill="#555" font-weight="bold">WLAN-Hub</text>
+        <text x="392" y="156" text-anchor="middle" font-size="9" fill="#888">(Steckdose)</text>
+
+        <!-- WLAN Wellen Hub → Router -->
+        <path d="M425,92 Q455,72 470,92" stroke="#1976d2" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+        <path d="M425,100 Q458,74 478,100" stroke="#1976d2" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity=".5"/>
+        <text x="452" y="70" text-anchor="middle" font-size="9" fill="#1565c0">WLAN</text>
+
+        <!-- 4. Router -->
+        <rect x="480" y="60" width="80" height="80" rx="10" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+        <line x1="504" y1="60" x2="504" y2="50" stroke="#1976d2" stroke-width="2"/>
+        <line x1="520" y1="60" x2="520" y2="46" stroke="#1976d2" stroke-width="2"/>
+        <line x1="536" y1="60" x2="536" y2="50" stroke="#1976d2" stroke-width="2"/>
+        <text x="520" y="100" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">WLAN</text>
+        <text x="520" y="113" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">Router</text>
+        <text x="520" y="128" text-anchor="middle" font-size="8" fill="#1976d2">2,4 GHz</text>
+
+        <!-- Internet Pfeil -->
+        <line x1="562" y1="100" x2="590" y2="100" stroke="#1976d2" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#fw2)"/>
+
+        <!-- 5. Smartphone -->
+        <rect x="594" y="58" width="68" height="100" rx="10" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
+        <rect x="599" y="70" width="58" height="76" rx="4" fill="#e8f5e9"/>
+        <circle cx="628" cy="63" r="3" fill="#455a64"/>
+        <rect x="599" y="70" width="58" height="16" rx="4" fill="#e65100"/>
+        <text x="628" y="81" text-anchor="middle" font-size="7" fill="white">Smart Life App</text>
+        <rect x="603" y="92" width="50" height="10" rx="3" fill="white" stroke="#c8e6c9" stroke-width="1"/>
+        <text x="628" y="100" text-anchor="middle" font-size="6" fill="#555">06:00 · 15 Min · tägl.</text>
+        <rect x="603" y="108" width="50" height="10" rx="3" fill="white" stroke="#c8e6c9" stroke-width="1"/>
+        <text x="628" y="116" text-anchor="middle" font-size="6" fill="#555">Zone 1 · Online ●</text>
+        <text x="628" y="170" text-anchor="middle" font-size="10" fill="#aaa">App</text>
+      </svg>
+    </div>
+    <p style="text-align:center; font-size:.88rem; color:#888; margin-top:12px;">Das Gerät kommuniziert per <strong>Funk</strong> mit dem kleinen Hub, der Hub ist per <strong>WLAN</strong> mit deinem Router verbunden.</p>
+  </div>
+
+  <!-- Einzelne Teile erklärt -->
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🖤</div>
+      <h3>Das Hauptgerät</h3>
+      <p>Schwarzes Gerät mit orangen Griffen. Schraubt direkt auf den Wasserhahn. Hat <strong>zwei unabhängige Ventile</strong> (Zone 1 und Zone 2) – du kannst also zwei verschiedene Schläuche/Bereiche getrennt steuern.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📦</div>
+      <h3>WLAN-Hub (kleine schwarze Box)</h3>
+      <p>Die kleine quadratische Box mit dem orangen Knopf. Sie kommt in eine <strong>Steckdose in der Nähe des WLAN-Routers</strong> (nicht draußen!). Sie ist das Bindeglied zwischen Gerät und deinem WLAN.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>Adapter (2 schwarze Teile)</h3>
+      <p>Die zwei schwarzen Gewindeadapter dienen als Zwischenstück, falls dein Wasserhahn ein <strong>anderes Gewindemaß</strong> hat als das Gerät. Probiere zuerst ohne Adapter – oft passt es direkt.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🟡</div>
+      <h3>Gummidichtung (gelb/weiß)</h3>
+      <p>Der kleine Gummiring dichtet die Gewindeverbindungen ab. Er gehört <strong>in das Gewinde</strong> bevor du das Gerät anschraubst. Ohne ihn kann es an den Verbindungen tropfen.</p>
+    </div>
+  </div>
+
+</div><!-- end tab teile -->
+
+
+<!-- ══════════════════════════════════════
+     TAB 1 – EINRICHTEN
+══════════════════════════════════════ -->
+<div id="einrichten" class="tab">
 
   <div class="section-head">
     <h2>Gerät einrichten</h2>
-    <p>Folge diesen 5 Schritten der Reihe nach – die Einrichtung dauert ca. 10 Minuten.</p>
+    <p>Folge diesen Schritten der Reihe nach – dauert ca. 15 Minuten.</p>
   </div>
 
   <!-- STEP 1 -->
   <div class="step">
-    <div class="step-left"><div class="step-num">1</div></div>
+    <div class="step-num">1</div>
     <div class="step-body">
       <h3>Batterien einlegen</h3>
-      <p>Öffne das Batteriefach auf der <strong>Rückseite des Geräts</strong> (meist ein Schiebeverschluss). Lege <strong>4 AA-Batterien</strong> ein und achte auf die eingeprägten <strong>+</strong> und <strong>–</strong> Symbole. Das Display leuchtet danach auf.</p>
+      <p>Öffne das Batteriefach auf der <strong>Rückseite des schwarzen Hauptgeräts</strong>. Lege <strong>4 AA-Alkaline-Batterien</strong> ein. Auf die eingeprägten <strong>+</strong> und <strong>–</strong> Symbole achten. Nach dem Einlegen leuchten die beiden grünen LEDs kurz auf.</p>
       <div class="illus">
-        <svg width="320" height="130" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg">
-          <rect x="80" y="20" width="160" height="90" rx="12" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
-          <text x="160" y="14" text-anchor="middle" font-size="11" fill="#555">Rückseite des Geräts</text>
-          <rect x="95" y="32" width="130" height="66" rx="6" fill="#f1f8e9" stroke="#81c784" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <text x="160" y="50" text-anchor="middle" font-size="10" fill="#388e3c">Batteriefach öffnen</text>
-          <rect x="103" y="62" width="26" height="12" rx="3" fill="#fdd835"/>
-          <rect x="103" y="62" width="5" height="12" rx="2" fill="#f9a825"/>
-          <text x="116" y="72" text-anchor="middle" font-size="7" fill="#333">AA</text>
-          <rect x="135" y="62" width="26" height="12" rx="3" fill="#fdd835"/>
-          <rect x="135" y="62" width="5" height="12" rx="2" fill="#f9a825"/>
-          <text x="148" y="72" text-anchor="middle" font-size="7" fill="#333">AA</text>
-          <rect x="167" y="62" width="26" height="12" rx="3" fill="#fdd835"/>
-          <rect x="167" y="62" width="5" height="12" rx="2" fill="#f9a825"/>
-          <text x="180" y="72" text-anchor="middle" font-size="7" fill="#333">AA</text>
-          <rect x="199" y="62" width="26" height="12" rx="3" fill="#fdd835"/>
-          <rect x="199" y="62" width="5" height="12" rx="2" fill="#f9a825"/>
-          <text x="212" y="72" text-anchor="middle" font-size="7" fill="#333">AA</text>
-          <text x="108" y="58" text-anchor="middle" font-size="9" fill="#e53935">+</text>
-          <text x="128" y="58" text-anchor="middle" font-size="9" fill="#1565c0">–</text>
-          <text x="140" y="58" text-anchor="middle" font-size="9" fill="#e53935">+</text>
-          <text x="160" y="58" text-anchor="middle" font-size="9" fill="#1565c0">–</text>
-          <text x="172" y="58" text-anchor="middle" font-size="9" fill="#e53935">+</text>
-          <text x="192" y="58" text-anchor="middle" font-size="9" fill="#1565c0">–</text>
-          <text x="204" y="58" text-anchor="middle" font-size="9" fill="#e53935">+</text>
-          <text x="224" y="58" text-anchor="middle" font-size="9" fill="#1565c0">–</text>
-          <defs><marker id="a1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#aaa"/></marker></defs>
-          <line x1="78" y1="68" x2="58" y2="68" stroke="#aaa" stroke-width="1.5" marker-end="url(#a1)"/>
-          <text x="44" y="72" text-anchor="middle" font-size="10" fill="#555">Rückseite</text>
+        <svg width="360" height="140" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Gerät Rückseite -->
+          <rect x="90" y="15" width="180" height="110" rx="14" fill="#1e1e1e"/>
+          <rect x="76" y="22" width="20" height="96" rx="8" fill="#e65100"/>
+          <rect x="264" y="22" width="20" height="96" rx="8" fill="#e65100"/>
+          <text x="180" y="9" text-anchor="middle" font-size="11" fill="#777">Rückseite</text>
+          <!-- Batteriefach -->
+          <rect x="104" y="28" width="152" height="84" rx="8" fill="#2a2a2a" stroke="#444" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="180" y="46" text-anchor="middle" font-size="10" fill="#666">Batteriefach öffnen</text>
+          <!-- 4 Batterien -->
+          <rect x="112" y="56" width="28" height="14" rx="4" fill="#fdd835"/>
+          <rect x="112" y="56" width="6" height="14" rx="3" fill="#f9a825"/>
+          <text x="126" y="67" text-anchor="middle" font-size="7.5" fill="#333">AA</text>
+          <text x="115" y="52" font-size="10" fill="#e53935">+</text>
+          <text x="136" y="52" font-size="10" fill="#1565c0">–</text>
+
+          <rect x="148" y="56" width="28" height="14" rx="4" fill="#fdd835"/>
+          <rect x="148" y="56" width="6" height="14" rx="3" fill="#f9a825"/>
+          <text x="162" y="67" text-anchor="middle" font-size="7.5" fill="#333">AA</text>
+          <text x="151" y="52" font-size="10" fill="#e53935">+</text>
+          <text x="172" y="52" font-size="10" fill="#1565c0">–</text>
+
+          <rect x="184" y="56" width="28" height="14" rx="4" fill="#fdd835"/>
+          <rect x="184" y="56" width="6" height="14" rx="3" fill="#f9a825"/>
+          <text x="198" y="67" text-anchor="middle" font-size="7.5" fill="#333">AA</text>
+          <text x="187" y="52" font-size="10" fill="#e53935">+</text>
+          <text x="208" y="52" font-size="10" fill="#1565c0">–</text>
+
+          <rect x="220" y="56" width="28" height="14" rx="4" fill="#fdd835"/>
+          <rect x="220" y="56" width="6" height="14" rx="3" fill="#f9a825"/>
+          <text x="234" y="67" text-anchor="middle" font-size="7.5" fill="#333">AA</text>
+          <text x="223" y="52" font-size="10" fill="#e53935">+</text>
+          <text x="244" y="52" font-size="10" fill="#1565c0">–</text>
+
+          <!-- LED check -->
+          <circle cx="150" cy="96" r="6" fill="#00e676"/>
+          <circle cx="210" cy="96" r="6" fill="#00e676"/>
+          <text x="180" y="118" text-anchor="middle" font-size="9" fill="#4caf50">LEDs leuchten auf ✓</text>
         </svg>
       </div>
-      <div class="tip">💡 Verwende <strong>Alkaline-Batterien</strong> (z. B. Duracell oder Varta). Billig-Batterien entladen sich schneller und können Verbindungsabbrüche verursachen.</div>
+      <div class="tip">💡 <strong>Alkaline-Batterien</strong> verwenden (Duracell, Varta). Günstige Batterien führen zu Verbindungsabbrüchen.</div>
     </div>
   </div>
 
   <!-- STEP 2 -->
   <div class="step">
-    <div class="step-left"><div class="step-num">2</div></div>
+    <div class="step-num">2</div>
     <div class="step-body">
-      <h3>An den Wasserhahn schrauben</h3>
-      <p>Schraube den Bewässerungscomputer direkt auf deinen <strong>Außenwasserhahn</strong>. Das Gewinde ist ein Standard-Gartengewinde (3/4 Zoll) – passt an fast alle europäischen Außenhähne. Drehe <strong>mit dem Uhrzeigersinn</strong> bis es handfest sitzt. Kein Werkzeug nötig.</p>
+      <h3>Dichtungsring einlegen &amp; an den Hahn schrauben</h3>
+      <p>Stecke den <strong>gelben/weißen Gummidichtungsring</strong> in das obere Gewinde des Geräts. Dann schraube das Gerät <strong>mit dem Uhrzeigersinn</strong> auf den Außenwasserhahn – handfest, kein Werkzeug nötig. Schraube dann je einen <strong>Gartenschlauch</strong> unten links (Zone 1) und/oder unten rechts (Zone 2) an.</p>
       <div class="illus">
-        <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
-          <defs><marker id="a2" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#4caf50"/></marker></defs>
-          <!-- Wall -->
-          <rect x="20" y="10" width="22" height="130" rx="4" fill="#b0bec5"/>
-          <text x="31" y="148" text-anchor="middle" font-size="9" fill="#607d8b">Wand</text>
-          <!-- Pipe -->
-          <rect x="42" y="52" width="36" height="16" rx="4" fill="#78909c"/>
-          <!-- Handle -->
-          <rect x="54" y="36" width="6" height="18" rx="2" fill="#546e7a"/>
-          <rect x="46" y="32" width="22" height="8" rx="3" fill="#546e7a"/>
-          <!-- Device -->
-          <rect x="78" y="40" width="52" height="40" rx="8" fill="#a5d6a7" stroke="#4caf50" stroke-width="2"/>
-          <rect x="86" y="48" width="36" height="16" rx="3" fill="#1a2e1a"/>
-          <text x="104" y="59" text-anchor="middle" font-size="8" fill="#69f0ae">12:00 📶</text>
-          <!-- Rotation arrow -->
-          <path d="M130,52 Q142,40 154,52" stroke="#f57c00" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
-          <polygon points="154,52 149,44 159,46" fill="#f57c00"/>
-          <text x="160" y="44" font-size="9" fill="#f57c00">↻ festdrehen</text>
-          <!-- Hose connector -->
-          <rect x="90" y="80" width="28" height="14" rx="4" fill="#78909c"/>
-          <!-- Hose -->
-          <path d="M104,94 Q104,118 145,124 Q185,130 210,115" stroke="#4caf50" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <text x="215" y="130" font-size="9" fill="#555">Gartenschlauch</text>
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="bx" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#e65100"/></marker></defs>
+          <!-- Hahn -->
+          <rect x="20" y="60" width="40" height="18" rx="4" fill="#78909c"/>
+          <rect x="33" y="44" width="7" height="18" rx="2" fill="#607d8b"/>
+          <rect x="24" y="40" width="26" height="9" rx="3" fill="#607d8b"/>
+          <text x="40" y="90" text-anchor="middle" font-size="9" fill="#555">Hahn</text>
+
+          <!-- Dichtungsring -->
+          <ellipse cx="95" cy="50" rx="14" ry="5" fill="#fdd835" stroke="#d4a000" stroke-width="1.5"/>
+          <text x="95" y="34" text-anchor="middle" font-size="9" fill="#555">Dichtring</text>
+          <text x="95" y="43" text-anchor="middle" font-size="8" fill="#888">zuerst einlegen</text>
+          <line x1="95" y1="45" x2="95" y2="55" stroke="#e65100" stroke-width="1.5" marker-end="url(#bx)"/>
+
+          <!-- Gerät -->
+          <rect x="130" y="40" width="120" height="90" rx="12" fill="#1e1e1e"/>
+          <rect x="118" y="50" width="16" height="70" rx="6" fill="#e65100"/>
+          <rect x="246" y="50" width="16" height="70" rx="6" fill="#e65100"/>
+          <!-- Oben Gewinde -->
+          <ellipse cx="190" cy="40" rx="22" ry="8" fill="#333"/>
+          <ellipse cx="190" cy="36" rx="18" ry="6" fill="#444"/>
+          <!-- Rotation pfeil -->
+          <path d="M212,42 Q226,30 238,42" stroke="#f57c00" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
+          <polygon points="238,42 233,34 243,36" fill="#f57c00"/>
+          <text x="248" y="32" font-size="9" fill="#f57c00">↻</text>
+          <!-- LEDs -->
+          <circle cx="172" cy="65" r="5" fill="#00e676"/>
+          <circle cx="208" cy="65" r="5" fill="#00e676"/>
+          <!-- Knopf -->
+          <rect x="162" y="84" width="56" height="22" rx="11" fill="#e65100"/>
+          <line x1="190" y1="84" x2="190" y2="106" stroke="#bf360c" stroke-width="1.5"/>
+          <text x="176" y="98" text-anchor="middle" font-size="7.5" fill="white">Z1</text>
+          <text x="204" y="98" text-anchor="middle" font-size="7.5" fill="white">Z2</text>
+          <!-- Zone outputs -->
+          <rect x="142" y="130" width="38" height="32" rx="5" fill="#333"/>
+          <rect x="220" y="130" width="38" height="32" rx="5" fill="#333"/>
+          <!-- Hose zone 1 -->
+          <path d="M161,162 Q161,180 120,185 Q80,190 60,178" stroke="#1565c0" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <text x="58" y="194" font-size="9" fill="#1565c0">Zone 1</text>
+          <!-- Hose zone 2 -->
+          <path d="M239,162 Q239,180 278,185 Q310,190 325,178" stroke="#6a1b9a" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <text x="300" y="194" font-size="9" fill="#6a1b9a">Zone 2</text>
+          <!-- Labels -->
+          <text x="161" y="147" text-anchor="middle" font-size="8" fill="#888">Z1</text>
+          <text x="239" y="147" text-anchor="middle" font-size="8" fill="#888">Z2</text>
         </svg>
       </div>
-      <p style="margin-top:12px;">Schraube danach den <strong>Gartenschlauch</strong> unten ans Gerät. Auch hier reicht handfest.</p>
-      <div class="tip">⚠️ Stelle sicher, dass der Wasserhahn <strong>geöffnet ist</strong>, bevor du die App einrichtest – das Gerät braucht Wasserdruck zum Testen des Ventils.</div>
+      <div class="tip">⚠️ Stelle sicher dass der <strong>Wasserhahn geöffnet ist</strong> – das Gerät braucht Wasserdruck.</div>
+      <div class="info">ℹ️ Du musst <strong>nicht beide Zonen</strong> belegen. Du kannst auch nur Zone 1 nutzen.</div>
     </div>
   </div>
 
   <!-- STEP 3 -->
   <div class="step">
-    <div class="step-left"><div class="step-num">3</div></div>
+    <div class="step-num">3</div>
     <div class="step-body">
-      <h3>App „Smart Life" installieren</h3>
-      <p>Die App heißt <strong>Smart Life</strong> (alternativ: Tuya Smart). Suche sie im App Store (iPhone) oder Google Play Store (Android) – sie ist kostenlos.</p>
+      <h3>Hub in die Steckdose stecken (drinnen!)</h3>
+      <p>Stecke den kleinen schwarzen <strong>WLAN-Hub</strong> (die quadratische Box mit dem orangen Knopf) in eine <strong>Steckdose im Haus</strong> – möglichst in der Nähe deines WLAN-Routers. Der Hub darf <strong>nicht im Freien</strong> verwendet werden.</p>
       <div class="illus">
-        <svg width="280" height="115" viewBox="0 0 280 115" xmlns="http://www.w3.org/2000/svg">
-          <!-- iPhone -->
-          <rect x="28" y="5" width="72" height="104" rx="10" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-          <rect x="33" y="18" width="62" height="82" rx="4" fill="#e8f5e9"/>
-          <circle cx="64" cy="12" r="3" fill="#455a64"/>
-          <rect x="40" y="24" width="48" height="48" rx="10" fill="#4caf50"/>
-          <text x="64" y="53" text-anchor="middle" font-size="26" fill="white">💧</text>
-          <text x="64" y="80" text-anchor="middle" font-size="8" fill="#2e7d32" font-weight="bold">Smart Life</text>
-          <text x="64" y="91" text-anchor="middle" font-size="7" fill="#888">Kostenlos</text>
-          <rect x="36" y="95" width="56" height="10" rx="5" fill="#007aff"/>
-          <text x="64" y="103" text-anchor="middle" font-size="7" fill="white">App Store</text>
-          <!-- Android -->
-          <rect x="180" y="5" width="72" height="104" rx="10" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-          <rect x="185" y="15" width="62" height="84" rx="4" fill="#e8f5e9"/>
-          <rect x="209" y="101" width="24" height="4" rx="2" fill="#455a64"/>
-          <rect x="192" y="22" width="48" height="48" rx="10" fill="#4caf50"/>
-          <text x="216" y="51" text-anchor="middle" font-size="26" fill="white">💧</text>
-          <text x="216" y="79" text-anchor="middle" font-size="8" fill="#2e7d32" font-weight="bold">Smart Life</text>
-          <text x="216" y="90" text-anchor="middle" font-size="7" fill="#888">Kostenlos</text>
-          <rect x="188" y="94" width="56" height="10" rx="5" fill="#34a853"/>
-          <text x="216" y="102" text-anchor="middle" font-size="7" fill="white">Google Play</text>
-          <!-- oder -->
-          <text x="140" y="62" text-anchor="middle" font-size="13" fill="#aaa">oder</text>
+        <svg width="320" height="120" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- Wand/Steckdose -->
+          <rect x="20" y="20" width="70" height="80" rx="4" fill="#e0e0e0"/>
+          <rect x="30" y="40" width="22" height="22" rx="3" fill="#bdbdbd"/>
+          <ellipse cx="41" cy="51" rx="4" ry="5" fill="#9e9e9e"/>
+          <rect x="58" y="40" width="22" height="22" rx="3" fill="#bdbdbd"/>
+          <ellipse cx="69" cy="51" rx="4" ry="5" fill="#9e9e9e"/>
+          <text x="55" y="108" text-anchor="middle" font-size="9" fill="#555">Steckdose</text>
+          <text x="55" y="119" text-anchor="middle" font-size="8" fill="#888">(drinnen!)</text>
+
+          <!-- Hub -->
+          <rect x="130" y="30" width="65" height="65" rx="10" fill="#1e1e1e" stroke="#333" stroke-width="1.5"/>
+          <circle cx="162" cy="63" r="9" fill="#111" stroke="#444" stroke-width="1"/>
+          <circle cx="162" cy="63" r="4" fill="#e65100"/>
+          <circle cx="182" cy="38" r="5" fill="#00e676"/>
+          <!-- Stecker unten -->
+          <rect x="150" y="95" width="6" height="12" rx="2" fill="#555"/>
+          <rect x="162" y="95" width="6" height="12" rx="2" fill="#555"/>
+          <text x="162" y="115" text-anchor="middle" font-size="9" fill="#555">Hub</text>
+
+          <!-- WLAN Wellen -->
+          <path d="M198,55 Q220,40 238,55" stroke="#1976d2" stroke-width="1.5" fill="none"/>
+          <path d="M198,63 Q225,42 248,63" stroke="#1976d2" stroke-width="1.5" fill="none" opacity=".6"/>
+          <path d="M198,71 Q228,44 258,71" stroke="#1976d2" stroke-width="1.5" fill="none" opacity=".3"/>
+          <text x="248" y="38" font-size="9" fill="#1565c0">WLAN</text>
+
+          <!-- Router -->
+          <rect x="260" y="40" width="50" height="46" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+          <line x1="274" y1="40" x2="274" y2="33" stroke="#1976d2" stroke-width="2"/>
+          <line x1="285" y1="40" x2="285" y2="30" stroke="#1976d2" stroke-width="2"/>
+          <line x1="296" y1="40" x2="296" y2="33" stroke="#1976d2" stroke-width="2"/>
+          <text x="285" y="72" text-anchor="middle" font-size="8" fill="#1565c0" font-weight="bold">Router</text>
+          <text x="285" y="83" text-anchor="middle" font-size="7" fill="#1976d2">2,4 GHz</text>
         </svg>
       </div>
-      <p style="margin-top:12px;">Öffne die App und erstelle ein <strong>kostenloses Konto</strong> mit deiner E-Mail. Du bekommst eine Bestätigungs-E-Mail – klicke darin auf den Link.</p>
-      <div class="info">ℹ️ Das Konto ist einmalig nötig. Du kannst dieselbe App später auch für andere Smart-Home-Geräte nutzen.</div>
     </div>
   </div>
 
   <!-- STEP 4 -->
   <div class="step">
-    <div class="step-left"><div class="step-num">4</div></div>
+    <div class="step-num">4</div>
     <div class="step-body">
-      <h3>Gerät mit der App koppeln (WLAN-Einrichtung)</h3>
-      <p>Jetzt verbindest du das Gerät mit deinem Heimnetz:</p>
-      <ul>
-        <li>Tippe in der App oben rechts auf <strong>„+"</strong> → „Gerät hinzufügen"</li>
-        <li>Halte den Knopf am Gerät <strong>5 Sekunden gedrückt</strong> bis die LED schnell blinkt</li>
-        <li>Bestätige in der App dass die Anzeige blinkt</li>
-        <li>Gib dein <strong>WLAN-Passwort</strong> ein und warte ca. 30 Sekunden</li>
-      </ul>
-      <div class="illus">
-        <svg width="320" height="148" viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg">
-          <defs><marker id="a3" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#4caf50"/></marker></defs>
-          <!-- Phone 1 -->
-          <rect x="8" y="4" width="82" height="140" rx="10" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-          <rect x="13" y="18" width="72" height="118" rx="4" fill="#e8f5e9"/>
-          <circle cx="49" cy="11" r="3" fill="#455a64"/>
-          <rect x="13" y="18" width="72" height="20" rx="4" fill="#4caf50"/>
-          <text x="49" y="31" text-anchor="middle" font-size="9" fill="white">Smart Life  +</text>
-          <rect x="18" y="46" width="62" height="26" rx="5" fill="white" stroke="#c8e6c9" stroke-width="1"/>
-          <text x="49" y="57" text-anchor="middle" font-size="8" fill="#2e7d32">Gerät hinzufügen</text>
-          <text x="49" y="68" text-anchor="middle" font-size="7" fill="#888">Bewässerung</text>
-          <!-- Arrow -->
-          <line x1="93" y1="74" x2="113" y2="74" stroke="#4caf50" stroke-width="2" marker-end="url(#a3)"/>
-          <!-- Device middle -->
-          <rect x="116" y="28" width="62" height="92" rx="12" fill="#a5d6a7" stroke="#4caf50" stroke-width="2"/>
-          <rect x="126" y="40" width="42" height="22" rx="4" fill="#1a2e1a"/>
-          <text x="147" y="54" text-anchor="middle" font-size="8" fill="#69f0ae">blinkt!</text>
-          <circle cx="147" cy="74" r="4" fill="#ffeb3b"/>
-          <circle cx="158" cy="74" r="4" fill="#ffeb3b" opacity="0.5"/>
-          <circle cx="169" cy="74" r="4" fill="#ffeb3b" opacity="0.2"/>
-          <circle cx="147" cy="100" r="10" fill="#2e7d32" stroke="#1b5e20" stroke-width="1.5"/>
-          <text x="147" y="104" text-anchor="middle" font-size="8" fill="white">5 s</text>
-          <text x="147" y="126" text-anchor="middle" font-size="9" fill="#555">Knopf halten</text>
-          <!-- Arrow -->
-          <line x1="181" y1="74" x2="201" y2="74" stroke="#4caf50" stroke-width="2" marker-end="url(#a3)"/>
-          <!-- Phone 2 -->
-          <rect x="204" y="4" width="108" height="140" rx="10" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-          <rect x="209" y="18" width="98" height="118" rx="4" fill="#e8f5e9"/>
-          <circle cx="258" cy="11" r="3" fill="#455a64"/>
-          <rect x="209" y="18" width="98" height="20" rx="4" fill="#4caf50"/>
-          <text x="258" y="31" text-anchor="middle" font-size="9" fill="white">WLAN-Passwort</text>
-          <rect x="215" y="46" width="86" height="18" rx="4" fill="white" stroke="#bbb" stroke-width="1"/>
-          <text x="222" y="58" font-size="8" fill="#bbb">Passwort eingeben…</text>
-          <rect x="215" y="72" width="86" height="16" rx="8" fill="#4caf50"/>
-          <text x="258" y="83" text-anchor="middle" font-size="9" fill="white">Weiter →</text>
-          <text x="258" y="110" text-anchor="middle" font-size="12" fill="#4caf50">✓</text>
-          <text x="258" y="124" text-anchor="middle" font-size="9" fill="#2e7d32" font-weight="bold">Verbunden!</text>
-          <text x="258" y="136" text-anchor="middle" font-size="8" fill="#888">Gerät online</text>
-        </svg>
-      </div>
-      <div class="tip">⚠️ Das Gerät funktioniert <strong>nur mit 2,4 GHz WLAN</strong> – nicht mit 5 GHz. Falls es nicht klappt, schau in Tab ③ „Häufige Fehler".</div>
+      <h3>App „Smart Life" installieren &amp; Konto erstellen</h3>
+      <p>Lade die App <strong>Smart Life</strong> (oder Tuya Smart) aus dem App Store (iPhone) oder Google Play Store (Android) herunter. Erstelle ein kostenloses Konto mit deiner E-Mail-Adresse und bestätige sie per Link in der E-Mail.</p>
+      <div class="info">ℹ️ Das Konto ist einmalig nötig und kann auch für andere Smart-Home-Geräte von Tuya/Smart Life genutzt werden.</div>
     </div>
   </div>
 
   <!-- STEP 5 -->
   <div class="step">
-    <div class="step-left"><div class="step-num">5</div></div>
+    <div class="step-num">5</div>
     <div class="step-body">
-      <h3>Verbindung testen</h3>
-      <p>Das Gerät erscheint jetzt in der App. Auf dem Display siehst du ein kleines <strong>WLAN-Symbol</strong>. Tippe in der App auf den Ein/Aus-Schalter – du hörst ein leises Klicken und Wasser fließt.</p>
-      <div class="illus">
-        <svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="10" width="100" height="80" rx="10" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-          <rect x="25" y="22" width="90" height="62" rx="4" fill="#e8f5e9"/>
-          <circle cx="70" cy="16" r="3" fill="#455a64"/>
-          <rect x="25" y="22" width="90" height="18" rx="4" fill="#4caf50"/>
-          <text x="70" y="34" text-anchor="middle" font-size="9" fill="white">Mein Garten</text>
-          <rect x="30" y="46" width="80" height="32" rx="6" fill="white" stroke="#c8e6c9" stroke-width="1"/>
-          <text x="52" y="59" font-size="9" fill="#2e7d32">🌿 Garten vorne</text>
-          <text x="52" y="70" font-size="8" fill="#4caf50">● Online</text>
-          <rect x="86" y="60" width="18" height="10" rx="5" fill="#4caf50"/>
-          <circle cx="98" cy="65" r="4" fill="white"/>
-          <text x="150" y="58" text-anchor="middle" font-size="38" fill="#4caf50">✓</text>
-          <text x="150" y="80" text-anchor="middle" font-size="10" fill="#555">Fertig!</text>
-        </svg>
-      </div>
-      <p style="margin-top:12px;">Du kannst das Gerät umbenennen: Tippe auf den Gerätenamen → <strong>Bearbeiten</strong>. Z. B. „Rasen", „Balkon" oder „Gemüsebeet".</p>
+      <h3>Hub mit der App verbinden</h3>
+      <p>Zuerst verbindest du den <strong>Hub</strong> (nicht das Hauptgerät!) mit der App:</p>
+      <ul>
+        <li>In der App oben rechts auf <strong>„+"</strong> tippen → „Gerät hinzufügen"</li>
+        <li>Suche nach <strong>„Hub"</strong> oder „Gateway" in der Liste</li>
+        <li>Halte den <strong>Knopf am Hub 5 Sekunden</strong> gedrückt bis die LED schnell blinkt</li>
+        <li>Dein <strong>WLAN-Passwort</strong> eingeben (nur 2,4 GHz!)</li>
+        <li>Warten bis die App „Verbunden" meldet</li>
+      </ul>
+      <div class="tip">⚠️ Nur <strong>2,4 GHz WLAN</strong> – kein 5 GHz! Falls es nicht klappt, lies Tab ③.</div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-body">
+      <h3>Hauptgerät (Ventil) mit der App verbinden</h3>
+      <p>Jetzt verbindest du das schwarze Hauptgerät am Hahn mit der App:</p>
+      <ul>
+        <li>In der App erneut auf <strong>„+"</strong> → „Gerät hinzufügen"</li>
+        <li>Wähle diesmal das <strong>Bewässerungsventil</strong> aus</li>
+        <li>Halte den <strong>orangen Doppelknopf am Hauptgerät 5 Sekunden</strong> gedrückt</li>
+        <li>Das Gerät wird automatisch über den Hub erkannt</li>
+        <li>Gerät erscheint in der App mit <strong>Zone 1 und Zone 2</strong></li>
+      </ul>
+      <div class="success">✓ Wenn beide LEDs am Hauptgerät grün leuchten und die App beide Zonen anzeigt, ist die Einrichtung abgeschlossen!</div>
     </div>
   </div>
 
 </div><!-- end tab einrichten -->
 
 
-<!-- ══════════════ TAB 2 – BENUTZEN ══════════════ -->
+<!-- ══════════════════════════════════════
+     TAB 2 – BENUTZEN
+══════════════════════════════════════ -->
 <div id="benutzen" class="tab">
 
   <div class="section-head">
     <h2>App benutzen &amp; Bewässerung einrichten</h2>
-    <p>Alles, was du im Alltag brauchst – von der manuellen Steuerung bis zum automatischen Zeitplan.</p>
+    <p>Alles, was du täglich brauchst – manuell, Zeitplan, Timer und Sprachsteuerung.</p>
   </div>
 
   <div class="app-screen">
     <div class="screen-illus">
-      <svg width="100" height="160" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg">
-        <rect x="5" y="5" width="90" height="150" rx="12" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-        <rect x="10" y="20" width="80" height="126" rx="5" fill="#e8f5e9"/>
-        <circle cx="50" cy="13" r="3.5" fill="#455a64"/>
-        <rect x="10" y="20" width="80" height="20" rx="5" fill="#4caf50"/>
-        <text x="50" y="34" text-anchor="middle" font-size="9" fill="white">Garten vorne</text>
-        <circle cx="50" cy="92" r="28" fill="#e8f5e9" stroke="#c8e6c9" stroke-width="2"/>
-        <circle cx="50" cy="92" r="22" fill="#4caf50"/>
-        <text x="50" y="89" text-anchor="middle" font-size="9" fill="white" font-weight="bold">EIN</text>
-        <text x="50" y="101" text-anchor="middle" font-size="7" fill="white">tippen</text>
-        <circle cx="50" cy="132" r="4" fill="#4caf50"/>
-        <text x="60" y="136" font-size="8" fill="#555">Aktiv</text>
+      <svg width="110" height="190" viewBox="0 0 110 190" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="100" height="180" rx="14" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
+        <rect x="10" y="22" width="90" height="150" rx="6" fill="#f5f5f5"/>
+        <circle cx="55" cy="14" r="4" fill="#455a64"/>
+        <rect x="10" y="22" width="90" height="22" rx="6" fill="#e65100"/>
+        <text x="55" y="36" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Mein Garten</text>
+        <!-- Zone 1 card -->
+        <rect x="14" y="50" width="82" height="46" rx="8" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+        <text x="24" y="65" font-size="8" fill="#333" font-weight="bold">Zone 1</text>
+        <text x="24" y="76" font-size="7" fill="#888">Rasen vorne</text>
+        <rect x="68" y="60" width="22" height="12" rx="6" fill="#4caf50"/>
+        <circle cx="83" cy="66" r="4.5" fill="white"/>
+        <text x="24" y="89" font-size="7" fill="#4caf50">● Aktiv – 08:23 verbleibend</text>
+        <!-- Zone 2 card -->
+        <rect x="14" y="104" width="82" height="40" rx="8" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+        <text x="24" y="119" font-size="8" fill="#333" font-weight="bold">Zone 2</text>
+        <text x="24" y="130" font-size="7" fill="#888">Blumenbeet</text>
+        <rect x="68" y="114" width="22" height="12" rx="6" fill="#ccc"/>
+        <circle cx="72" cy="120" r="4.5" fill="white"/>
+        <text x="24" y="138" font-size="7" fill="#aaa">Aus</text>
       </svg>
     </div>
     <div class="screen-text">
-      <h3>💧 Manuell bewässern</h3>
-      <p>Tippe in der App auf dein Gerät. Du siehst einen großen runden <strong>Ein/Aus-Schalter</strong>. Ein Tipp startet die Bewässerung sofort, ein weiterer Tipp stoppt sie wieder.</p>
-      <p style="margin-top:8px;">Praktisch zum schnellen Testen oder wenn der Garten gerade sofort Wasser braucht – egal wo du gerade bist, auch aus der Ferne.</p>
+      <h3>💧 Manuell bewässern – Zone 1 &amp; Zone 2</h3>
+      <p>Die App zeigt <strong>Zone 1</strong> <span class="zone-badge zone1">ZONE 1</span> und <strong>Zone 2</strong> <span class="zone-badge zone2">ZONE 2</span> als separate Karten. Tippe auf den <strong>Schieberegler</strong> rechts neben einer Zone um sie ein- oder auszuschalten.</p>
+      <p style="margin-top:8px;">Du kannst <strong>beide Zonen gleichzeitig</strong> einschalten oder nur eine davon – ganz egal.</p>
+      <p style="margin-top:8px;">Am Gerät selbst: Linke Seite des <strong>orangen Knopfs</strong> = Zone 1 manuell, rechte Seite = Zone 2 manuell.</p>
     </div>
   </div>
 
   <div class="app-screen">
     <div class="screen-illus">
-      <svg width="100" height="188" viewBox="0 0 100 188" xmlns="http://www.w3.org/2000/svg">
-        <rect x="5" y="5" width="90" height="178" rx="12" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-        <rect x="10" y="20" width="80" height="154" rx="5" fill="#e8f5e9"/>
-        <circle cx="50" cy="13" r="3.5" fill="#455a64"/>
-        <rect x="10" y="20" width="80" height="20" rx="5" fill="#4caf50"/>
-        <text x="50" y="34" text-anchor="middle" font-size="9" fill="white">Zeitplan</text>
-        <rect x="14" y="48" width="72" height="30" rx="5" fill="white" stroke="#c8e6c9" stroke-width="1"/>
-        <text x="20" y="60" font-size="9" fill="#2e7d32" font-weight="bold">06:00 Uhr</text>
-        <text x="20" y="71" font-size="7" fill="#888">15 Min · Mo–Fr</text>
-        <rect x="70" y="57" width="12" height="7" rx="3.5" fill="#4caf50"/>
-        <circle cx="77" cy="60.5" r="2.5" fill="white"/>
-        <rect x="14" y="84" width="72" height="30" rx="5" fill="white" stroke="#c8e6c9" stroke-width="1"/>
-        <text x="20" y="96" font-size="9" fill="#2e7d32" font-weight="bold">19:30 Uhr</text>
-        <text x="20" y="107" font-size="7" fill="#888">20 Min · Sa So</text>
-        <rect x="70" y="93" width="12" height="7" rx="3.5" fill="#ccc"/>
-        <circle cx="74" cy="96.5" r="2.5" fill="white"/>
-        <rect x="14" y="120" width="72" height="30" rx="5" fill="white" stroke="#c8e6c9" stroke-width="1"/>
-        <text x="20" y="132" font-size="9" fill="#2e7d32" font-weight="bold">08:00 Uhr</text>
-        <text x="20" y="143" font-size="7" fill="#888">10 Min · täglich</text>
-        <rect x="70" y="129" width="12" height="7" rx="3.5" fill="#4caf50"/>
-        <circle cx="77" cy="132.5" r="2.5" fill="white"/>
-        <circle cx="50" cy="163" r="12" fill="#4caf50"/>
-        <text x="50" y="168" text-anchor="middle" font-size="14" fill="white">+</text>
+      <svg width="110" height="200" viewBox="0 0 110 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="100" height="190" rx="14" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
+        <rect x="10" y="22" width="90" height="160" rx="6" fill="#f5f5f5"/>
+        <circle cx="55" cy="14" r="4" fill="#455a64"/>
+        <rect x="10" y="22" width="90" height="22" rx="6" fill="#e65100"/>
+        <text x="55" y="36" text-anchor="middle" font-size="9" fill="white">Zeitplan – Zone 1</text>
+        <!-- Entry 1 active -->
+        <rect x="14" y="50" width="82" height="34" rx="6" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+        <text x="20" y="63" font-size="9" fill="#333" font-weight="bold">06:00 Uhr</text>
+        <text x="20" y="74" font-size="7" fill="#888">20 Min · Mo Di Mi Do Fr</text>
+        <rect x="76" y="58" width="16" height="9" rx="4.5" fill="#4caf50"/>
+        <circle cx="86" cy="62.5" r="3.5" fill="white"/>
+        <!-- Entry 2 off -->
+        <rect x="14" y="90" width="82" height="34" rx="6" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+        <text x="20" y="103" font-size="9" fill="#333" font-weight="bold">19:30 Uhr</text>
+        <text x="20" y="114" font-size="7" fill="#888">15 Min · Sa So</text>
+        <rect x="76" y="98" width="16" height="9" rx="4.5" fill="#ccc"/>
+        <circle cx="80" cy="102.5" r="3.5" fill="white"/>
+        <!-- Add -->
+        <circle cx="55" cy="158" r="14" fill="#e65100"/>
+        <text x="55" y="163" text-anchor="middle" font-size="16" fill="white">+</text>
+        <text x="55" y="180" text-anchor="middle" font-size="7" fill="#888">Neuer Zeitplan</text>
       </svg>
     </div>
     <div class="screen-text">
-      <h3>⏰ Automatischen Zeitplan einrichten</h3>
-      <p>So bewässert dein Garten jeden Tag automatisch zur gleichen Zeit:</p>
+      <h3>⏰ Zeitplan pro Zone einrichten</h3>
+      <p>Jede Zone hat einen <strong>eigenen Zeitplan</strong>. Du kannst Zone 1 (z. B. Rasen) anders bewässern als Zone 2 (z. B. Blumenbeet).</p>
       <ul>
-        <li>Tippe auf dein Gerät → dann auf das <strong>Uhr-Symbol</strong> oder „Zeitplan"</li>
-        <li>Tippe auf <strong>„+"</strong> für einen neuen Eintrag</li>
-        <li>Wähle die <strong>Startzeit</strong> (z. B. 06:00 Uhr)</li>
-        <li>Wähle die <strong>Dauer</strong> (z. B. 15 Minuten)</li>
-        <li>Wähle die <strong>Wochentage</strong> (oder „täglich")</li>
-        <li>Tippe auf <strong>„Speichern"</strong></li>
+        <li>Zone in der App antippen → <strong>Uhr-Symbol</strong> oder „Zeitplan"</li>
+        <li>Auf <strong>„+"</strong> tippen</li>
+        <li><strong>Startzeit</strong> wählen (z. B. 06:00 Uhr)</li>
+        <li><strong>Dauer</strong> wählen (z. B. 20 Minuten)</li>
+        <li><strong>Wochentage</strong> auswählen</li>
+        <li><strong>Speichern</strong> tippen</li>
       </ul>
-      <p style="margin-top:8px;">Du kannst mehrere Zeitpläne anlegen – z. B. einen für die Woche und einen für das Wochenende.</p>
-      <div class="tip">💡 Frühmorgens (6–8 Uhr) oder abends (19–21 Uhr) bewässern ist am besten – weniger Wasser verdunstet in der Hitze.</div>
+      <div class="tip">💡 Frühmorgens (6–8 Uhr) bewässern – weniger verdunstet. Zone 2 z. B. etwas später als Zone 1 einplanen.</div>
     </div>
   </div>
 
   <div class="app-screen">
     <div class="screen-illus">
-      <svg width="100" height="160" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg">
-        <rect x="5" y="5" width="90" height="150" rx="12" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
-        <rect x="10" y="20" width="80" height="126" rx="5" fill="#e8f5e9"/>
-        <circle cx="50" cy="13" r="3.5" fill="#455a64"/>
-        <rect x="10" y="20" width="80" height="20" rx="5" fill="#00897b"/>
-        <text x="50" y="34" text-anchor="middle" font-size="9" fill="white">Timer</text>
-        <circle cx="50" cy="88" r="34" fill="white" stroke="#80cbc4" stroke-width="2"/>
-        <text x="50" y="82" text-anchor="middle" font-size="18" fill="#00897b" font-weight="bold">20</text>
-        <text x="50" y="96" text-anchor="middle" font-size="9" fill="#888">Minuten</text>
-        <path d="M50,54 A34,34 0 1,1 16,88" stroke="#00897b" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <rect x="24" y="132" width="52" height="14" rx="7" fill="#00897b"/>
-        <text x="50" y="142" text-anchor="middle" font-size="8" fill="white">Starten</text>
+      <svg width="110" height="180" viewBox="0 0 110 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="100" height="170" rx="14" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
+        <rect x="10" y="22" width="90" height="140" rx="6" fill="#f5f5f5"/>
+        <circle cx="55" cy="14" r="4" fill="#455a64"/>
+        <rect x="10" y="22" width="90" height="22" rx="6" fill="#00897b"/>
+        <text x="55" y="36" text-anchor="middle" font-size="9" fill="white">Timer – Zone 1</text>
+        <circle cx="55" cy="100" r="38" fill="white" stroke="#b2dfdb" stroke-width="2"/>
+        <path d="M55,62 A38,38 0 1,1 17,100" stroke="#00897b" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <text x="55" y="94" text-anchor="middle" font-size="20" fill="#00897b" font-weight="bold">20</text>
+        <text x="55" y="110" text-anchor="middle" font-size="10" fill="#888">Minuten</text>
+        <rect x="24" y="148" width="62" height="16" rx="8" fill="#00897b"/>
+        <text x="55" y="160" text-anchor="middle" font-size="9" fill="white">Starten</text>
       </svg>
     </div>
     <div class="screen-text">
-      <h3>⚡ Einmal-Timer (stoppt automatisch)</h3>
-      <p>Du möchtest jetzt genau 20 Minuten bewässern und das Wasser soll dann von selbst aufhören?</p>
-      <p style="margin-top:8px;">Tippe auf das <strong>Stoppuhr-Symbol</strong> oder „Timer", stelle die Minuten ein und starte. Das Gerät schließt das Ventil automatisch nach Ablauf der Zeit – kein Vergessen möglich.</p>
+      <h3>⚡ Einmal-Timer pro Zone</h3>
+      <p>Du möchtest Zone 1 jetzt für genau 20 Minuten bewässern ohne extra Zeitplan? Tippe auf die Zone → <strong>Stoppuhr-Symbol</strong> oder „Timer" → Minuten einstellen → Starten.</p>
+      <p style="margin-top:8px;">Das Ventil schließt <strong>automatisch</strong> nach Ablauf. Für Zone 2 machst du dasselbe separat.</p>
     </div>
   </div>
 
-  <div class="card-grid" style="margin-top:8px;">
+  <div class="card-grid">
     <div class="card">
       <div class="card-icon">🎙️</div>
-      <h3>Sprachsteuerung mit Alexa</h3>
+      <h3>Sprachsteuerung (Alexa)</h3>
       <ul>
-        <li>Öffne die <strong>Alexa-App</strong></li>
-        <li>Tippe auf <strong>„Mehr"</strong> → „Skills &amp; Spiele"</li>
-        <li>Suche nach <strong>„Smart Life"</strong> und aktiviere den Skill</li>
-        <li>Melde dich mit deinem Smart-Life-Konto an</li>
-        <li>Alexa findet das Gerät automatisch</li>
+        <li>Alexa-App → <strong>Skills &amp; Spiele</strong></li>
+        <li><strong>„Smart Life"</strong> suchen und aktivieren</li>
+        <li>Mit Smart-Life-Konto anmelden</li>
       </ul>
-      <p style="margin-top:10px;">Dann sagen: <em>„Alexa, schalte Garten vorne ein."</em></p>
+      <p style="margin-top:8px;"><em>„Alexa, schalte Rasen vorne ein."</em><br/><em>„Alexa, schalte Blumenbeet aus."</em></p>
     </div>
     <div class="card">
       <div class="card-icon">🏠</div>
-      <h3>Sprachsteuerung mit Google Home</h3>
+      <h3>Sprachsteuerung (Google)</h3>
       <ul>
-        <li>Öffne die <strong>Google Home App</strong></li>
-        <li>Tippe auf <strong>„+"</strong> → „Gerät einrichten"</li>
-        <li>Wähle <strong>„Funktioniert mit Google"</strong></li>
-        <li>Suche nach <strong>„Smart Life"</strong> und anmelden</li>
+        <li>Google Home App → <strong>„+"</strong> → Gerät einrichten</li>
+        <li><strong>„Funktioniert mit Google"</strong> → Smart Life</li>
+        <li>Anmelden und bestätigen</li>
       </ul>
-      <p style="margin-top:10px;">Dann sagen: <em>„Hey Google, schalte Garten an."</em></p>
+      <p style="margin-top:8px;"><em>„Hey Google, schalte Zone 1 an."</em></p>
     </div>
     <div class="card">
       <div class="card-icon">🔕</div>
-      <h3>Zeitplan pausieren</h3>
-      <p>Möchtest du den Zeitplan vorübergehend ausschalten ohne ihn zu löschen? Öffne den Zeitplan in der App und tippe auf den <strong>Schieberegler</strong> – er wird grau (inaktiv). Der Plan bleibt gespeichert und kann jederzeit wieder eingeschaltet werden.</p>
-      <p style="margin-top:8px;">Nützlich beim Urlaub oder wenn es regnet.</p>
+      <h3>Zeitplan pausieren (Urlaub / Regen)</h3>
+      <p>Öffne den Zeitplan der jeweiligen Zone und tippe auf den <strong>Schieberegler</strong> neben dem Eintrag – er wird grau (inaktiv). Der Plan bleibt gespeichert und kann jederzeit wieder eingeschaltet werden.</p>
     </div>
     <div class="card">
-      <div class="card-icon">🌧️</div>
-      <h3>Tipp: Regen-Pause einplanen</h3>
-      <p>Das Gerät hat keine eingebaute Regensensor-Funktion. Wenn du nicht jedes Mal manuell pausieren möchtest, gibt es <strong>günstige WLAN-Regensensoren</strong> (ab ~15 €), die über Smart Life direkt mit dem Bewässerungscomputer verknüpft werden können.</p>
+      <div class="card-icon">📊</div>
+      <h3>Zwei Zonen sinnvoll nutzen</h3>
+      <p>Beispiel: <span class="zone-badge zone1">ZONE 1</span> für den Rasen (braucht mehr Wasser, länger), <span class="zone-badge zone2">ZONE 2</span> für Blumen oder Hochbeete (kürzer, häufiger). Beide können unabhängig gesteuert werden.</p>
     </div>
   </div>
 
 </div><!-- end tab benutzen -->
 
 
-<!-- ══════════════ TAB 3 – FEHLER ══════════════ -->
+<!-- ══════════════════════════════════════
+     TAB 3 – FEHLER
+══════════════════════════════════════ -->
 <div id="fehler" class="tab">
 
   <div class="section-head">
@@ -622,110 +878,92 @@
   </div>
 
   <div class="error-card">
-    <div class="error-title" onclick="toggleError(this)">❌ Gerät verbindet sich nicht mit dem WLAN</div>
+    <div class="error-title" onclick="toggleError(this)">❌ Hub verbindet sich nicht mit dem WLAN</div>
     <div class="error-body">
-      <p>Das ist das häufigste Problem bei der Ersteinrichtung – in 9 von 10 Fällen liegt es am WLAN-Typ.</p>
-      <div class="illus">
-        <svg width="300" height="110" viewBox="0 0 300 110" xmlns="http://www.w3.org/2000/svg">
-          <rect x="110" y="8" width="80" height="44" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
-          <text x="150" y="26" text-anchor="middle" font-size="9" fill="#1565c0" font-weight="bold">WLAN-Router</text>
-          <line x1="130" y1="8" x2="130" y2="2" stroke="#1976d2" stroke-width="2"/>
-          <line x1="170" y1="8" x2="170" y2="2" stroke="#1976d2" stroke-width="2"/>
-          <path d="M32,55 Q58,35 84,55" stroke="#4caf50" stroke-width="2" fill="none"/>
-          <path d="M22,65 Q58,38 94,65" stroke="#4caf50" stroke-width="2" fill="none" opacity="0.5"/>
-          <text x="58" y="82" text-anchor="middle" font-size="9" fill="#2e7d32" font-weight="bold">2,4 GHz</text>
-          <text x="58" y="94" text-anchor="middle" font-size="8" fill="#4caf50">✓ funktioniert</text>
-          <line x1="83" y1="58" x2="110" y2="30" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <path d="M216,55 Q242,35 268,55" stroke="#e53935" stroke-width="2" fill="none"/>
-          <path d="M206,65 Q242,38 278,65" stroke="#e53935" stroke-width="2" fill="none" opacity="0.5"/>
-          <text x="242" y="82" text-anchor="middle" font-size="9" fill="#c62828" font-weight="bold">5 GHz</text>
-          <text x="242" y="94" text-anchor="middle" font-size="8" fill="#e53935">✗ nicht kompatibel</text>
-          <line x1="217" y1="58" x2="190" y2="30" stroke="#e53935" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <text x="197" y="46" font-size="16" fill="#e53935">✕</text>
+      <div class="illus" style="margin-bottom:12px;">
+        <svg width="280" height="90" viewBox="0 0 280 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="15" width="60" height="60" rx="9" fill="#1e1e1e"/>
+          <circle cx="50" cy="45" r="7" fill="#111"/>
+          <circle cx="50" cy="45" r="3" fill="#e65100"/>
+          <text x="50" y="84" text-anchor="middle" font-size="8" fill="#555">Hub</text>
+          <path d="M80,42 Q100,28 114,42" stroke="#4caf50" stroke-width="1.5" fill="none"/>
+          <path d="M80,50 Q104,30 120,50" stroke="#4caf50" stroke-width="1.5" fill="none" opacity=".5"/>
+          <text x="100" y="24" font-size="8" fill="#2e7d32">2,4 GHz ✓</text>
+          <rect x="126" y="20" width="60" height="50" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+          <line x1="140" y1="20" x2="140" y2="13" stroke="#1976d2" stroke-width="2"/>
+          <line x1="156" y1="20" x2="156" y2="10" stroke="#1976d2" stroke-width="2"/>
+          <text x="156" y="52" text-anchor="middle" font-size="8" fill="#1565c0">Router</text>
+          <text x="156" y="62" text-anchor="middle" font-size="7" fill="#1976d2">2,4 GHz</text>
+          <!-- 5GHz block -->
+          <path d="M186,42 Q206,28 220,42" stroke="#e53935" stroke-width="1.5" fill="none"/>
+          <path d="M186,50 Q210,30 226,50" stroke="#e53935" stroke-width="1.5" fill="none" opacity=".5"/>
+          <text x="210" y="24" font-size="8" fill="#c62828">5 GHz ✗</text>
+          <text x="214" y="36" font-size="12" fill="#e53935">✕</text>
+          <rect x="234" y="20" width="30" height="50" rx="4" fill="#ffebee" stroke="#e53935" stroke-width="1"/>
+          <text x="249" y="48" text-anchor="middle" font-size="7" fill="#c62828">5G</text>
         </svg>
       </div>
       <div class="fix-label">✔ Lösung:</div>
-      <p>Beim Einrichten in der App das <strong>2,4-GHz-Netzwerk</strong> auswählen. Viele Router haben zwei Netze – z. B. „MeinNetz" (2,4 GHz) und „MeinNetz_5G" (5 GHz). Wähle das ohne „_5G".</p>
-      <p>Falls dein Router kein getrenntes Netz hat: Melde dich in die Router-Einstellungen ein (Browser → 192.168.1.1) und schalte 5 GHz kurz aus oder benenne die Netze separat.</p>
-      <div class="tip">💡 Steh beim Einrichten nah am Router (max. 3–5 Meter). Später kann das Gerät weiter weg stehen.</div>
+      <p>Der Hub funktioniert <strong>nur mit 2,4 GHz WLAN</strong>. Wähle beim Einrichten in der App das 2,4-GHz-Netz – oft erkennbar daran, dass kein „_5G" oder „5GHz" im Namen steht.</p>
+      <p>Außerdem: Hub und Router sollten beim ersten Einrichten <strong>maximal 3–5 Meter</strong> voneinander entfernt sein.</p>
     </div>
   </div>
 
   <div class="error-card">
-    <div class="error-title" onclick="toggleError(this)">❌ App zeigt das Gerät als „offline"</div>
+    <div class="error-title" onclick="toggleError(this)">❌ Hauptgerät (Ventil) wird nicht in der App gefunden</div>
     <div class="error-body">
-      <p>Das Gerät wurde eingerichtet, steht in der App aber jetzt als offline.</p>
       <div class="fix-label">✔ Lösung:</div>
-      <p><strong>1.</strong> Funktioniert dein WLAN generell? (andere Geräte online?)<br/>
-      <strong>2.</strong> Batterien kurz herausnehmen, 10 Sek. warten, wieder einlegen.<br/>
-      <strong>3.</strong> Gerät steht zu weit vom Router entfernt oder eine dicke Wand blockiert das Signal → Gerät näher ran stellen oder einen WLAN-Repeater dazwischen setzen.<br/>
-      <strong>4.</strong> Wurde das WLAN-Passwort geändert? → Gerät neu einrichten (Schritt 4 aus Tab ① wiederholen).</p>
+      <p>Das Hauptgerät verbindet sich <strong>über den Hub</strong>, nicht direkt per WLAN. Stelle sicher dass:</p>
+      <p>1. Der Hub bereits erfolgreich in der App eingerichtet ist (grüne LED am Hub leuchtet dauerhaft).<br/>
+      2. Das Hauptgerät in <strong>Reichweite des Hubs</strong> ist (ca. 10–20 Meter Funkreichweite, ohne dicke Wände).<br/>
+      3. Der orangen Knopf am Hauptgerät wirklich <strong>5 Sekunden gedrückt</strong> wurde bis die LEDs schnell blinken.</p>
     </div>
   </div>
 
   <div class="error-card">
-    <div class="error-title" onclick="toggleError(this)">❌ Kein Wasser, obwohl die App „Ein" anzeigt</div>
+    <div class="error-title" onclick="toggleError(this)">❌ App zeigt Gerät als „offline"</div>
     <div class="error-body">
-      <p>In der App steht die Bewässerung ist aktiv, aber aus dem Schlauch kommt nichts.</p>
       <div class="fix-label">✔ Lösung:</div>
-      <p><strong>Zuerst prüfen:</strong> Ist der <strong>Wasserhahn geöffnet</strong>? Das Gerät öffnet nur ein internes Ventil – es braucht Wasserdruck am Hahn.</p>
-      <p>Wasser kommt aber sehr schwach? Der kleine <strong>Siebfilter</strong> am Eingang des Geräts könnte verstopft sein. Gerät abschrauben und den Filter unter fließendem Wasser durchspülen.</p>
-      <div class="illus">
-        <svg width="220" height="86" viewBox="0 0 220 86" xmlns="http://www.w3.org/2000/svg">
-          <defs><marker id="a4" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#f57c00"/></marker><marker id="a5" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#4caf50"/></marker></defs>
-          <rect x="18" y="28" width="38" height="16" rx="4" fill="#78909c"/>
-          <rect x="33" y="14" width="6" height="16" rx="2" fill="#607d8b"/>
-          <rect x="25" y="10" width="22" height="8" rx="3" fill="#607d8b"/>
-          <text x="37" y="56" text-anchor="middle" font-size="8" fill="#555">Hahn auf?</text>
-          <line x1="58" y1="36" x2="76" y2="36" stroke="#f57c00" stroke-width="2" marker-end="url(#a4)"/>
-          <rect x="78" y="20" width="48" height="32" rx="6" fill="#a5d6a7" stroke="#4caf50" stroke-width="1.5"/>
-          <text x="102" y="39" text-anchor="middle" font-size="9" fill="#1b5e20">Gerät</text>
-          <rect x="86" y="25" width="24" height="12" rx="2" fill="#fff9c4" stroke="#f9a825" stroke-width="1"/>
-          <text x="98" y="34" text-anchor="middle" font-size="7" fill="#e65100">Filter</text>
-          <line x1="128" y1="36" x2="146" y2="36" stroke="#4caf50" stroke-width="2" marker-end="url(#a5)"/>
-          <path d="M148,36 Q172,36 182,52" stroke="#4caf50" stroke-width="6" fill="none" stroke-linecap="round"/>
-          <text x="178" y="72" font-size="12" fill="#29b6f6">💧</text>
-        </svg>
-      </div>
+      <p><strong>1.</strong> Ist der Hub noch in der Steckdose und leuchtet die LED grün?<br/>
+      <strong>2.</strong> Funktioniert dein WLAN generell?<br/>
+      <strong>3.</strong> Batterien im Hauptgerät kurz herausnehmen (10 Sek.) und wieder einlegen.<br/>
+      <strong>4.</strong> Wurde das WLAN-Passwort geändert? → Hub neu einrichten.</p>
     </div>
   </div>
 
   <div class="error-card">
-    <div class="error-title" onclick="toggleError(this)">❌ Zeitplan läuft nicht zur richtigen Zeit</div>
+    <div class="error-title" onclick="toggleError(this)">❌ Kein Wasser aus Zone 1 oder Zone 2</div>
     <div class="error-body">
-      <p>Der Zeitplan ist eingestellt, aber das Gerät bewässert zu einer anderen oder gar keiner Zeit.</p>
       <div class="fix-label">✔ Lösung:</div>
-      <p><strong>Zeitzone prüfen:</strong> Geräteeinstellungen öffnen (Stift-Symbol oder „…") → Zeitzone auf <strong>„Europa/Berlin"</strong> einstellen.</p>
-      <p><strong>Zeitplan aktiv?</strong> Ist der Schieberegler neben dem Zeitplan <strong>grün</strong> (nicht grau)?</p>
-      <p><strong>Uhrzeit korrekt?</strong> Zeigt das Display am Gerät die richtige Zeit an?</p>
+      <p><strong>Zuerst prüfen: Ist der Wasserhahn geöffnet?</strong> Das vergisst man leicht. Das Gerät öffnet nur das Ventil – Wasserdruck muss am Hahn anliegen.</p>
+      <p>Wasser kommt aber sehr schwach: Der kleine <strong>Siebfilter</strong> am Eingang (oben, wo das Gerät am Hahn sitzt) könnte verstopft sein. Gerät abschrauben und Filter unter Wasser ausspülen.</p>
+      <p>Nur Zone 2 funktioniert nicht: Prüfe ob in der App Zone 2 wirklich eingeschaltet ist und ob der Schlauch richtig am Zone-2-Auslass angeschraubt ist.</p>
     </div>
   </div>
 
   <div class="error-card">
-    <div class="error-title" onclick="toggleError(this)">❌ Es tropft an der Verbindung Hahn–Gerät</div>
+    <div class="error-title" onclick="toggleError(this)">❌ Zeitplan läuft zur falschen Zeit oder gar nicht</div>
     <div class="error-body">
-      <p>Zwischen Wasserhahn und Gerät tropft es auch wenn das Ventil geschlossen ist.</p>
       <div class="fix-label">✔ Lösung:</div>
-      <p>Gerät abschrauben. <strong>Teflonband</strong> (weißes dünnes Klebeband, ~1 € im Baumarkt) <strong>5–7 Mal</strong> in Drehrichtung (mit dem Uhrzeigersinn) ums Gewinde wickeln. Dann wieder festschrauben – tropft danach nicht mehr.</p>
-      <div class="tip">💡 Teflonband gibt es in jedem Baumarkt (Hornbach, OBI, Bauhaus) unter dem Namen „Dichtungsband" für unter 2 €.</div>
+      <p><strong>Zeitzone:</strong> Geräteeinstellungen → Zeitzone auf <strong>„Europa/Berlin"</strong> setzen.<br/>
+      <strong>Plan aktiv?</strong> Schieberegler neben dem Zeitplan muss grün sein.<br/>
+      <strong>Richtige Zone?</strong> Zone 1 und Zone 2 haben separate Zeitpläne – prüfe beide.</p>
     </div>
   </div>
 
   <div class="error-card">
-    <div class="error-title" onclick="toggleError(this)">❌ Display leer / Gerät reagiert nicht mehr</div>
+    <div class="error-title" onclick="toggleError(this)">❌ Es tropft an den Gewindeverbindungen</div>
     <div class="error-body">
-      <p>Das Display zeigt nichts mehr oder das Gerät antwortet nicht auf die App.</p>
       <div class="fix-label">✔ Lösung:</div>
-      <p>Alle 4 Batterien auf einmal durch <strong>frische Alkaline-Batterien</strong> ersetzen. Nicht mischen (alte und neue zusammen). Ein Batteriewechsel löscht die gespeicherten Zeitpläne <strong>nicht</strong> – sie sind in der App gespeichert und werden nach dem Neustart (~30 Sek.) wieder synchronisiert.</p>
+      <p>Gerät abschrauben. Prüfe ob der <strong>gelbe Gummidichtring</strong> noch vorhanden und nicht beschädigt ist – er sitzt im oberen Gewinde. Falls er fehlt oder alt ist, neuen einlegen oder <strong>Teflonband</strong> (~1 € im Baumarkt) um das Gewinde wickeln.</p>
     </div>
   </div>
 
   <div class="error-card">
-    <div class="error-title" onclick="toggleError(this)">❌ Passwort der Smart-Life-App vergessen</div>
+    <div class="error-title" onclick="toggleError(this)">❌ LEDs am Hauptgerät leuchten nicht / Display tot</div>
     <div class="error-body">
-      <p>Du kommst nicht mehr in die App.</p>
       <div class="fix-label">✔ Lösung:</div>
-      <p>Auf dem Login-Bildschirm auf <strong>„Passwort vergessen"</strong> tippen. E-Mail eingeben → du bekommst einen Link per E-Mail zum Zurücksetzen. Das Gerät und alle Zeitpläne bleiben vollständig erhalten und erscheinen nach dem Login automatisch wieder.</p>
+      <p>Alle 4 Batterien durch frische <strong>Alkaline-Batterien</strong> ersetzen (alle auf einmal). Zeitpläne sind im Hub/App gespeichert – sie gehen durch den Batteriewechsel nicht verloren.</p>
     </div>
   </div>
 
@@ -734,7 +972,7 @@
 </main>
 
 <footer>
-  Anleitung für WLAN-Bewässerungscomputer (Tuya / Smart Life kompatibel) &nbsp;·&nbsp; Alexa &amp; Google Home &nbsp;·&nbsp; Stand 2025
+  Johgee WLAN-Bewässerungscomputer · 2-Zonen-Steuerung · Smart Life / Tuya &nbsp;·&nbsp; Stand 2025
 </footer>
 
 <script>
@@ -745,20 +983,16 @@
     btn.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  function toggleError(titleEl) {
-    const body = titleEl.nextElementSibling;
-    const isOpen = body.classList.contains('open');
-    titleEl.classList.toggle('open', !isOpen);
-    body.classList.toggle('open', !isOpen);
+  function toggleError(el) {
+    const body = el.nextElementSibling;
+    const open = body.classList.contains('open');
+    el.classList.toggle('open', !open);
+    body.classList.toggle('open', !open);
   }
-
-  // Open first error card by default
   document.addEventListener('DOMContentLoaded', () => {
     const first = document.querySelector('.error-title');
     if (first) toggleError(first);
   });
 </script>
-
 </body>
 </html>
